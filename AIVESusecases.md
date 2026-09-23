@@ -1,583 +1,865 @@
-# **ĐẶC TẢ USE CASE — HỆ THỐNG AIVES**
-
-### ***(AI-powered Viva Exam System)***
-
----
-
-## 👥 **1. Danh sách Actor**
-
-| \# | Actor | Loại | Mô tả |
-| :---- | :---- | :---- | :---- |
-| 1 | Sinh viên | Người dùng chính | Thí sinh tham gia thi vấn đáp |
-| 2 | Giảng viên | Người dùng chính | Ra đề, coi thi, đánh giá và duyệt điểm cuối cùng |
-| 3 | Quản trị viên | Người dùng chính | Quản lý hệ thống, phân quyền, cấu hình |
-| 4 | AI Giám khảo ảo (AI Engine) | Actor phụ (hệ thống) | Sinh câu hỏi hỏi xoáy, hỗ trợ chấm điểm, ghi transcript |
-| 5 | Dịch vụ TTS (Text-to-Speech) | Actor phụ (hệ thống) | Chuyển văn bản câu hỏi thành giọng nói |
-| 6 | Dịch vụ STT (Speech-to-Text) | Actor phụ (hệ thống) | Chuyển giọng nói của sinh viên thành văn bản theo thời gian gần thực |
-| 7 | Hệ thống Đào tạo của trường | Actor phụ (hệ thống) | Tiếp nhận bảng điểm được xuất ra từ AIVES |
+# 📚 TÀI LIỆU ĐẶC TẢ USE CASE — HỆ THỐNG AIVES
+### *(AI-powered Viva Exam System — Use Case Specification)*
 
 ---
 
-## 📋 **2. Danh sách Use Case**
+## 📌 Điều hướng nhanh / Quick Navigation
 
-| Mã | Tên Use Case | Actor chính | Nhóm |
-| :---- | :---- | :---- | :---- |
-| UC-00 | Đăng nhập | Sinh viên, Giảng viên, Quản trị viên | Dùng chung |
-| UC-01 | Tham gia buổi thi vấn đáp | Sinh viên | Nhóm 1 |
-| UC-02 | Trả lời câu hỏi bằng giọng nói | Sinh viên | Nhóm 1 |
-| UC-03 | Đọc câu hỏi bằng giọng nói (TTS) | Dịch vụ TTS | Nhóm 1 |
-| UC-04 | Chuyển giọng nói sang văn bản (STT) | Dịch vụ STT | Nhóm 1 |
-| UC-05 | Sinh câu hỏi hỏi xoáy (adaptive follow-up) | AI Giám khảo ảo | Nhóm 1 |
-| UC-06 | Giám sát buổi thi | Giảng viên | Nhóm 1 |
-| UC-07 | Ghi transcript buổi thi | AI Giám khảo ảo | Nhóm 1 |
-| UC-08 | Xem báo cáo kết quả thi | Sinh viên | Nhóm 2 |
-| UC-09 | Duyệt điểm cuối cùng | Giảng viên | Nhóm 2 |
-| UC-10 | Hỗ trợ chấm điểm theo rubric | AI Giám khảo ảo | Nhóm 2 |
-| UC-11 | Xem thống kê lớp học | Giảng viên | Nhóm 2 |
-| UC-12 | Xuất bảng điểm theo mẫu trường | Giảng viên | Nhóm 2 |
-| UC-13 | Quản lý tài khoản | Quản trị viên | Nhóm 3 |
-| UC-14 | Phân quyền giảng viên & môn học | Quản trị viên | Nhóm 3 |
-| UC-15 | Cấu hình ngôn ngữ STT/TTS | Quản trị viên | Nhóm 3 |
-| UC-16 | Soạn / sinh câu hỏi | Giảng viên | Nhóm 3 |
-| UC-17 | Cấu hình buổi thi | Giảng viên | Nhóm 3 |
+- 🇻🇳 **[PHẦN I: ĐẶC TẢ USE CASE (TIẾNG VIỆT)](#phần-i-đặc-tả-use-case-tiếng-việt)**
+  - [1. Danh sách Actor](#1-danh-sách-actor)
+  - [2. Danh mục Use Case theo nhóm](#2-danh-mục-use-case-theo-nhóm)
+  - [3. Đặc tả chi tiết từng Use Case](#3-đặc-tả-chi-tiết-từng-use-case)
+  - [4. Sơ đồ & Bảng tổng hợp quan hệ Use Case](#4-sơ-đồ--bảng-tổng-hợp-quan-hệ-use-case)
+- 🇬🇧 **[PART II: USE CASE SPECIFICATION (ENGLISH)](#part-ii-use-case-specification-english)**
+  - [1. Actor List](#1-actor-list)
+  - [2. Use Case Catalog by Group](#2-use-case-catalog-by-group)
+  - [3. Detailed Use Case Specifications](#3-detailed-use-case-specifications)
+  - [4. Diagram & Summary of Use Case Relationships](#4-diagram--summary-of-use-case-relationships)
+
+---
+---
+
+# PHẦN I: ĐẶC TẢ USE CASE (TIẾNG VIỆT)
+
+## 👥 1. Danh sách Actor
+
+| STT | Actor | Phân loại | Vai trò & Trách nhiệm trong hệ thống |
+| :-: | :--- | :--- | :--- |
+| **1** | **Sinh viên** | Người dùng chính *(Human)* | Thí sinh trực tiếp tham gia phòng thi vấn đáp ảo và thực hiện trả lời câu hỏi bằng giọng nói. |
+| **2** | **Giảng viên** | Người dùng chính *(Human)* | Soạn đề thi, giám sát phòng thi trực tiếp, đánh giá, điều chỉnh và duyệt điểm số chính thức cuối cùng. |
+| **3** | **Quản trị viên** | Người dùng chính *(Human)* | Quản lý tài khoản, phân quyền giảng viên theo môn học, cấu hình tham số hệ thống. |
+| **4** | **AI Giám khảo ảo** *(AI Engine)* | Actor phụ *(System)* | Phân tích câu trả lời, sinh câu hỏi hỏi xoáy (adaptive follow-up), đề xuất điểm theo rubric, ghi transcript. |
+| **5** | **Dịch vụ TTS** *(Text-to-Speech)* | Actor phụ *(External Service)* | Chuyển đổi văn bản câu hỏi thành giọng nói đọc cho sinh viên theo thời gian thực. |
+| **6** | **Dịch vụ STT** *(Speech-to-Text)* | Actor phụ *(External Service)* | Chuyển đổi giọng nói trả lời của thí sinh thành văn bản theo thời gian gần thực (near real-time). |
+| **7** | **Hệ thống Đào tạo** | Actor phụ *(External System)* | Hệ thống quản lý đào tạo của nhà trường, tiếp nhận bảng điểm chuẩn được xuất ra từ AIVES. |
 
 ---
 
-## 🔍 **3. Đặc tả chi tiết**
+## 📋 2. Danh mục Use Case theo nhóm
+
+### 🔹 Phân loại chức năng:
+* **Dùng chung (Authentication):** Quản lý phiên truy cập hệ thống.
+* **Nhóm 1 (Exam Execution & Real-time AI Interaction):** Quá trình diễn ra phiên thi vấn đáp trực tiếp giữa Thí sinh và Giám khảo ảo.
+* **Nhóm 2 (Grading, Review & Reporting):** Đánh giá kết quả thi, chấm điểm, thống kê và báo cáo.
+* **Nhóm 3 (Administration & Configuration):** Quản trị tài khoản, cấu hình tham số bài thi và quản lý ngân hàng câu hỏi.
+
+| Mã UC | Tên Use Case | Actor chính | Phân nhóm | Mô tả tóm tắt |
+| :-: | :--- | :--- | :--- | :--- |
+| **UC-00** | [Đăng nhập](#uc-00--đăng-nhập) | Sinh viên, Giảng viên, Quản trị viên | Dùng chung | Xác thực người dùng vào hệ thống theo vai trò |
+| **UC-01** | [Tham gia buổi thi vấn đáp](#uc-01--tham-gia-buổi-thi-vấn-đáp) | Sinh viên | Nhóm 1 | Vào phòng thi ảo để bắt đầu phiên vấn đáp AI |
+| **UC-02** | [Trả lời câu hỏi bằng giọng nói](#uc-02--trả-lời-câu-hỏi-bằng-giọng-nói) | Sinh viên | Nhóm 1 | Thu âm và trả lời câu hỏi trong giới hạn thời gian |
+| **UC-03** | [Đọc câu hỏi bằng giọng nói (TTS)](#uc-03--đọc-câu-hỏi-bằng-giọng-nói-tts) | Dịch vụ TTS | Nhóm 1 | Tổng hợp văn bản câu hỏi thành giọng nói phát cho thí sinh |
+| **UC-04** | [Chuyển giọng nói sang văn bản (STT)](#uc-04--chuyển-giọng-nói-sang-văn-bản-stt) | Dịch vụ STT | Nhóm 1 | Nhận diện giọng nói của thí sinh thành văn bản |
+| **UC-05** | [Sinh câu hỏi hỏi xoáy (Adaptive Follow-up)](#uc-05--sinh-câu-hỏi-hỏi-xoáy-adaptive-follow-up) | AI Giám khảo ảo | Nhóm 1 | AI phân tích câu trả lời và tự động sinh câu hỏi đào sâu |
+| **UC-06** | [Giám sát buổi thi](#uc-06--giám-sát-buổi-thi) | Giảng viên | Nhóm 1 | Theo dõi diễn biến phòng thi theo thời gian thực |
+| **UC-07** | [Ghi transcript buổi thi](#uc-07--ghi-transcript-buổi-thi) | AI Giám khảo ảo | Nhóm 1 | Lưu vết toàn bộ phiên thi làm bằng chứng bất biến |
+| **UC-08** | [Xem báo cáo kết quả thi](#uc-08--xem-báo-cáo-kết-quả-thi) | Sinh viên | Nhóm 2 | Xem điểm từng câu, nhận xét AI và transcript sau duyệt |
+| **UC-09** | [Duyệt điểm cuối cùng](#uc-09--duyệt-điểm-cuối-cùng) | Giảng viên | Nhóm 2 | Giảng viên xem xét đề xuất AI và chốt điểm chính thức |
+| **UC-10** | [Hỗ trợ chấm điểm theo rubric](#uc-10--hỗ-trợ-chấm-điểm-theo-rubric) | AI Giám khảo ảo | Nhóm 2 | AI phân tích transcript và đề xuất điểm theo rubric |
+| **UC-11** | [Xem thống kê lớp học](#uc-11--xem-thống-kê-lớp-học) | Giảng viên | Nhóm 2 | Thống kê phân bố điểm, tỷ lệ câu hỏi khó |
+| **UC-12** | [Xuất bảng điểm theo mẫu trường](#uc-12--xuất-bảng-điểm-theo-mẫu-trường) | Giảng viên | Nhóm 2 | Xuất file điểm nộp cho Hệ thống Đào tạo |
+| **UC-13** | [Quản lý tài khoản](#uc-13--quản-lý-tài-khoản) | Quản trị viên | Nhóm 3 | CRUD và khoá/mở tài khoản người dùng |
+| **UC-14** | [Phân quyền giảng viên & môn học](#uc-14--phân-quyền-giảng-viên--môn-học) | Quản trị viên | Nhóm 3 | Gán giảng viên phụ trách môn/lớp thi |
+| **UC-15** | [Cấu hình ngôn ngữ STT/TTS](#uc-15--cấu-hình-ngôn-ngữ-stttts) | Quản trị viên | Nhóm 3 | Cấu hình ngôn ngữ Tiếng Việt / Tiếng Anh cho phòng thi |
+| **UC-16** | [Soạn / sinh câu hỏi](#uc-16--soạn--sinh-câu-hỏi) | Giảng viên | Nhóm 3 | Soạn thủ công hoặc dùng AI gợi ý câu hỏi ngân hàng đề |
+| **UC-17** | [Cấu hình buổi thi](#uc-17--cấu-hình-buổi-thi) | Giảng viên | Nhóm 3 | Thiết lập thời gian, số lượt hỏi xoáy, ngân hàng đề, rubric |
+
+---
+
+## 🔍 3. Đặc tả chi tiết từng Use Case
+
+---
 
 ### **UC-00 — Đăng nhập**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Sinh viên, Giảng viên, Quản trị viên |
-| Mô tả | Người dùng đăng nhập vào hệ thống bằng tài khoản được cấp để truy cập các chức năng tương ứng với vai trò của mình |
-| Điều kiện tiên quyết | Người dùng đã có tài khoản hợp lệ trong hệ thống |
-| Luồng sự kiện chính | 1\. Người dùng mở trang đăng nhập AIVES. 2\. Người dùng nhập tên đăng nhập và mật khẩu. 3\. Hệ thống xác thực thông tin. 4\. Hệ thống chuyển hướng vào giao diện tương ứng với vai trò (sinh viên/giảng viên/quản trị viên). |
-| Luồng rẽ nhánh / ngoại lệ | 3a. Sai tài khoản/mật khẩu → hệ thống hiển thị thông báo lỗi, cho phép nhập lại (tối đa 5 lần trước khi tạm khoá tài khoản). |
-| Hậu điều kiện | Người dùng ở trạng thái đã đăng nhập, phiên làm việc (session) được tạo |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-00 — Đăng nhập** |
+| **Actor** | Sinh viên, Giảng viên, Quản trị viên |
+| **Mô tả** | Người dùng đăng nhập vào hệ thống bằng tài khoản được cấp để truy cập các chức năng tương ứng với vai trò của mình. |
+| **Điều kiện tiên quyết** | Người dùng đã có tài khoản hợp lệ được cấp trong hệ thống. |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Người dùng mở trang đăng nhập hệ thống AIVES.<br>**2.** Người dùng nhập tên đăng nhập (Username) và mật khẩu (Password).<br>**3.** Hệ thống kiểm tra và xác thực thông tin đăng nhập.<br>**4.** Hệ thống chuyển hướng người dùng vào giao diện tương ứng với vai trò (Sinh viên / Giảng viên / Quản trị viên). |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **3a. Sai tài khoản hoặc mật khẩu:**<br>• Hệ thống hiển thị thông báo lỗi và yêu cầu nhập lại.<br>• Nếu nhập sai quá 5 lần liên tiếp, hệ thống tạm khoá tài khoản trong khoảng thời gian quy định để bảo mật. |
+| **Hậu điều kiện** | Người dùng ở trạng thái đã đăng nhập; phiên làm việc (Session/Token) được khởi tạo thành công. |
+| **Quan hệ (Relationships)** | Tiền đề xác thực cho toàn bộ các Use Case khác trong hệ thống. |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-01 — Tham gia buổi thi vấn đáp**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Sinh viên |
-| Mô tả | Sinh viên vào phòng thi ảo để bắt đầu phiên thi vấn đáp do AI điều khiển |
-| Điều kiện tiên quyết | 1\. Sinh viên đã đăng nhập (UC-00).2\. Buổi thi/ca thi đã được Giảng viên tạo và cấu hình hoàn tất (UC-17).3\. Đến đúng khung giờ thi và thiết bị đạt yêu cầu (micro/camera). |
-| Luồng sự kiện chính | 1\. Sinh viên chọn ca thi trong danh sách.2\. Hệ thống kiểm tra điều kiện dự thi (đúng giờ, đúng người).3\. Hệ thống khởi tạo phiên thi và bắt đầu ghi transcript (UC-07).4\. AI Giám khảo ảo đọc câu hỏi đầu tiên thông qua TTS (bao gồm UC-03).5\. Sinh viên trả lời (chuyển sang UC-02). |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Sai lịch thi / không đủ điều kiện → hệ thống từ chối và thông báo lý do.3a. Mất kết nối trong lúc khởi tạo → hệ thống cho phép vào lại phiên thi (resume) trong thời gian cho phép. |
-| Hậu điều kiện | Phiên thi ở trạng thái "đang diễn ra", đồng hồ đếm thời gian bắt đầu chạy |
-| Quan hệ | include UC-03 (Đọc câu hỏi bằng giọng nói); include UC-07 (Ghi transcript buổi thi) |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-01 — Tham gia buổi thi vấn đáp** |
+| **Actor** | Sinh viên |
+| **Mô tả** | Sinh viên vào phòng thi ảo để bắt đầu phiên thi vấn đáp do AI điều khiển. |
+| **Điều kiện tiên quyết** | **1.** Sinh viên đã đăng nhập thành công ([UC-00](#uc-00--đăng-nhập)).<br>**2.** Buổi thi/ca thi đã được Giảng viên cấu hình hoàn tất ([UC-17](#uc-17--cấu-hình-buổi-thi)).<br>**3.** Đến đúng khung giờ thi quy định và thiết bị thí sinh đạt yêu cầu (micro, camera, kết nối mạng). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Sinh viên chọn ca thi tương ứng trong danh sách các kỳ thi.<br>**2.** Hệ thống kiểm tra điều kiện dự thi (đúng giờ, đúng danh sách sinh viên).<br>**3.** Hệ thống khởi tạo phiên thi và kích hoạt tiến trình ghi transcript (`«include»` [UC-07](#uc-07--ghi-transcript-buổi-thi)).<br>**4.** AI Giám khảo ảo đọc câu hỏi đầu tiên qua dịch vụ giọng nói TTS (`«include»` [UC-03](#uc-03--đọc-câu-hỏi-bằng-giọng-nói-tts)).<br>**5.** Sinh viên thực hiện trả lời câu hỏi (chuyển tiếp sang [UC-02](#uc-02--trả-lời-câu-hỏi-bằng-giọng-nói)). |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Không đủ điều kiện dự thi (sai lịch, chưa đến giờ hoặc không có tên):**<br>• Hệ thống từ chối truy cập và hiển thị thông báo lý do chi tiết.<br>**3a. Mất kết nối mạng trong lúc khởi tạo:**<br>• Hệ thống giữ trạng thái phòng chờ và cho phép sinh viên vào lại (resume) trong khoảng thời gian ân hạn cho phép. |
+| **Hậu điều kiện** | Phiên thi chuyển sang trạng thái "Đang diễn ra" (In-progress); đồng hồ đếm giờ bắt đầu hoạt động. |
+| **Quan hệ (Relationships)** | • `«include»` [UC-03](#uc-03--đọc-câu-hỏi-bằng-giọng-nói-tts) (Đọc câu hỏi bằng giọng nói)<br>• `«include»` [UC-07](#uc-07--ghi-transcript-buổi-thi) (Ghi transcript buổi thi) |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-02 — Trả lời câu hỏi bằng giọng nói**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Sinh viên |
-| Mô tả | Sinh viên trả lời câu hỏi của AI bằng giọng nói trong thời gian giới hạn cho mỗi câu |
-| Điều kiện tiên quyết | Đang trong phiên thi (UC-01); câu hỏi hiện tại đã được đọc xong |
-| Luồng sự kiện chính | 1\. Hệ thống bắt đầu đếm ngược thời gian trả lời cho câu hỏi hiện tại. 2\. Sinh viên nói câu trả lời. 3\. Hệ thống chuyển giọng nói sang văn bản theo thời gian gần thực (include UC-04). 4\. AI phân tích nội dung câu trả lời. 5\. Nếu câu trả lời còn mơ hồ/thiếu ý/mâu thuẫn và chưa đạt số lượt hỏi xoáy tối đa, AI sinh câu hỏi làm rõ (extend UC-05) và quay lại bước đọc câu hỏi. 6\. Nếu không, hệ thống chuyển sang câu hỏi tiếp theo hoặc kết thúc phiên thi. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Hết thời gian trả lời mà sinh viên chưa trả lời xong → hệ thống tự động dừng ghi âm, ghi nhận là "không trả lời"/"trả lời một phần". 3a. STT không nhận diện được giọng nói (nhiễu, phát âm không rõ) → hệ thống yêu cầu sinh viên nói lại một lần. |
-| Hậu điều kiện | Câu trả lời (văn bản \+ bản ghi âm) được lưu vào transcript, gắn với câu hỏi tương ứng |
-| Quan hệ | *include* UC-04 (Chuyển giọng nói sang văn bản); *extend* bởi UC-05 (Sinh câu hỏi hỏi xoáy) |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-02 — Trả lời câu hỏi bằng giọng nói** |
+| **Actor** | Sinh viên |
+| **Mô tả** | Sinh viên trả lời câu hỏi của AI bằng giọng nói trong thời gian giới hạn quy định cho mỗi câu. |
+| **Điều kiện tiên quyết** | Sinh viên đang trong phiên thi hợp lệ ([UC-01](#uc-01--tham-gia-buổi-thi-vấn-đáp)); câu hỏi hiện tại đã được đọc xong hoàn toàn. |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Hệ thống bắt đầu đếm ngược thời gian trả lời cho câu hỏi hiện tại.<br>**2.** Sinh viên phát biểu câu trả lời thông qua microphone.<br>**3.** Hệ thống chuyển luồng giọng nói sang văn bản theo thời gian gần thực (`«include»` [UC-04](#uc-04--chuyển-giọng-nói-sang-văn-bản-stt)).<br>**4.** AI Giám khảo ảo phân tích nội dung câu trả lời.<br>**5.** Nếu câu trả lời còn mơ hồ, thiếu ý hoặc mâu thuẫn và chưa chạm ngưỡng hỏi xoáy tối đa: AI sinh câu hỏi làm rõ (`«extend»` [UC-05](#uc-05--sinh-câu-hỏi-hỏi-xoáy-adaptive-follow-up)) và quay lại bước phát âm thanh câu hỏi.<br>**6.** Nếu câu trả lời hoàn tất hoặc hết lượt hỏi xoáy: Hệ thống chuyển sang câu hỏi kế tiếp hoặc kết thúc buổi thi. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Hết thời gian mà sinh viên chưa trả lời hoặc chưa nói xong:**<br>• Hệ thống tự động khoá micro, ghi nhận trạng thái "Không trả lời" hoặc "Trả lời một phần", chuyển tiếp câu hỏi.<br>**3a. Dịch vụ STT không nhận diện được (nhiễu âm thanh, phát âm quá nhỏ):**<br>• Hệ thống thông báo yêu cầu sinh viên phát biểu lại một lần trước khi tính thời gian tiếp. |
+| **Hậu điều kiện** | Câu trả lời (dạng text và file âm thanh) được lưu trữ vào transcript của phiên thi, liên kết với câu hỏi tương ứng. |
+| **Quan hệ (Relationships)** | • `«include»` [UC-04](#uc-04--chuyển-giọng-nói-sang-văn-bản-stt) (Chuyển giọng nói sang văn bản)<br>• Được mở rộng bởi `«extend»` [UC-05](#uc-05--sinh-câu-hỏi-hỏi-xoáy-adaptive-follow-up) (Sinh câu hỏi hỏi xoáy) |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-03 — Đọc câu hỏi bằng giọng nói (TTS)**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Dịch vụ TTS |
-| Mô tả | Chuyển nội dung văn bản của câu hỏi (do giảng viên soạn hoặc AI sinh ra) thành giọng nói phát cho sinh viên nghe |
-| Điều kiện tiên quyết | Có văn bản câu hỏi cần đọc; đã cấu hình ngôn ngữ đọc (UC-15) |
-| Luồng sự kiện chính | 1\. Hệ thống gửi văn bản câu hỏi đến dịch vụ TTS. 2\. Dịch vụ TTS tổng hợp giọng nói theo ngôn ngữ đã cấu hình. 3\. Hệ thống phát âm thanh cho sinh viên. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Dịch vụ TTS không phản hồi/lỗi → hệ thống hiển thị câu hỏi dạng văn bản thay thế và ghi log sự cố. |
-| Hậu điều kiện | Câu hỏi đã được truyền đạt tới sinh viên (dạng âm thanh) |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-03 — Đọc câu hỏi bằng giọng nói (TTS)** |
+| **Actor** | Dịch vụ TTS *(Actor hệ thống)* |
+| **Mô tả** | Chuyển nội dung văn bản của câu hỏi (do giảng viên soạn hoặc do AI sinh ra) thành âm thanh giọng nói phát cho thí sinh nghe. |
+| **Điều kiện tiên quyết** | Có văn bản câu hỏi cần đọc; cấu hình ngôn ngữ đọc ([UC-15](#uc-15--cấu-hình-ngôn-ngữ-stttts)) đã được thiết lập. |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Hệ thống gửi nội dung văn bản câu hỏi tới dịch vụ TTS.<br>**2.** Dịch vụ TTS tổng hợp âm thanh giọng đọc theo đúng ngôn ngữ và giọng điệu đã cấu hình.<br>**3.** Hệ thống truyền phát âm thanh câu hỏi qua tai nghe/loa của thí sinh. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Dịch vụ TTS gặp sự cố hoặc không phản hồi:**<br>• Hệ thống tự động chuyển sang cơ chế dự phòng: hiển thị nội dung câu hỏi dưới dạng văn bản trực tiếp trên màn hình thi và ghi log sự cố kỹ thuật. |
+| **Hậu điều kiện** | Nội dung câu hỏi được truyền tải thành công đến thí sinh dưới dạng âm thanh. |
+| **Quan hệ (Relationships)** | Được bao gồm bởi `«include»` trong [UC-01](#uc-01--tham-gia-buổi-thi-vấn-đáp). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-04 — Chuyển giọng nói sang văn bản (STT)**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Dịch vụ STT |
-| Mô tả | Chuyển câu trả lời bằng giọng nói của sinh viên thành văn bản theo thời gian gần thực để AI phân tích |
-| Điều kiện tiên quyết | Đang thu âm câu trả lời của sinh viên; đã cấu hình ngôn ngữ nhận diện (UC-15) |
-| Luồng sự kiện chính | 1\. Hệ thống truyền luồng âm thanh đến dịch vụ STT theo thời gian thực. 2\. Dịch vụ STT trả về văn bản tương ứng, bao gồm các thuật ngữ chuyên ngành. 3\. Hệ thống hiển thị/lưu văn bản để AI xử lý tiếp. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Độ trễ vượt ngưỡng cho phép → hệ thống cảnh báo nguy cơ ảnh hưởng nhịp vấn đáp tự nhiên (liên quan yêu cầu phi chức năng "độ trễ thấp"). 2b. Nhận diện sai thuật ngữ chuyên ngành → văn bản vẫn được lưu nhưng đánh dấu độ tin cậy thấp để giảng viên đối chiếu khi cần. |
-| Hậu điều kiện | Văn bản câu trả lời sẵn sàng để AI sinh câu hỏi hỏi xoáy hoặc chấm điểm |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-04 — Chuyển giọng nói sang văn bản (STT)** |
+| **Actor** | Dịch vụ STT *(Actor hệ thống)* |
+| **Mô tả** | Chuyển đổi tín hiệu giọng nói trả lời của sinh viên thành văn bản theo thời gian gần thực (near real-time) để phục vụ phân tích. |
+| **Điều kiện tiên quyết** | Đang trong quá trình thu âm câu trả lời ([UC-02](#uc-02--trả-lời-câu-hỏi-bằng-giọng-nói)); ngôn ngữ nhận diện đã được cấu hình ([UC-15](#uc-15--cấu-hình-ngôn-ngữ-stttts)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Hệ thống truyền luồng dữ liệu âm thanh (Audio Stream) trực tiếp tới dịch vụ STT.<br>**2.** Dịch vụ STT xử lý và trả về chuỗi văn bản tương ứng (hỗ trợ các thuật ngữ chuyên ngành).<br>**3.** Hệ thống hiển thị/lưu trữ văn bản để chuyển sang cho AI phân tích. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Độ trễ chuyển đổi vượt ngưỡng giới hạn:**<br>• Hệ thống kích hoạt cảnh báo nguy cơ làm gián đoạn nhịp vấn đáp tự nhiên để tối ưu hóa buffer.<br>**2b. Nhận diện sai lệch thuật ngữ chuyên ngành:**<br>• Văn bản vẫn được lưu nhưng gắn cờ độ tin cậy thấp (low confidence) để Giảng viên đối chiếu bản ghi âm khi chấm điểm. |
+| **Hậu điều kiện** | Văn bản câu trả lời sẵn sàng cho AI Giám khảo ảo phân tích hỏi xoáy hoặc chấm điểm. |
+| **Quan hệ (Relationships)** | Được bao gồm bởi `«include»` trong [UC-02](#uc-02--trả-lời-câu-hỏi-bằng-giọng-nói). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
-### **UC-05 — Sinh câu hỏi hỏi xoáy (adaptive follow-up)**
+### **UC-05 — Sinh câu hỏi hỏi xoáy (Adaptive Follow-up)**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | AI Giám khảo ảo |
-| Mô tả | Dựa trên nội dung câu trả lời vừa nhận được, AI sinh câu hỏi làm rõ/hỏi xoáy giống cách giảng viên hỏi thêm khi câu trả lời còn mơ hồ, thiếu ý hoặc mâu thuẫn. Đây là chức năng thể hiện rõ nhất "trí tuệ" của hệ thống |
-| Điều kiện tiên quyết | Đã có văn bản câu trả lời (UC-04); số lượt hỏi xoáy cho câu hỏi hiện tại chưa đạt giới hạn tối đa đã cấu hình (UC-17) |
-| Luồng sự kiện chính | 1\. AI phân tích văn bản câu trả lời để phát hiện điểm mơ hồ, thiếu ý hoặc mâu thuẫn. 2\. AI sinh một câu hỏi làm rõ phù hợp ngữ cảnh. 3\. Câu hỏi mới được chuyển cho TTS đọc lại cho sinh viên (UC-03). 4\. Hệ thống tăng bộ đếm số lượt hỏi xoáy của câu hỏi hiện tại. |
-| Luồng rẽ nhánh / ngoại lệ | 1a. Câu trả lời đã đầy đủ, rõ ràng → AI quyết định không hỏi xoáy, chuyển sang câu hỏi kế tiếp. 4a. Đã đạt số lượt hỏi xoáy tối đa → hệ thống buộc chuyển sang câu hỏi tiếp theo dù câu trả lời chưa hoàn chỉnh. |
-| Hậu điều kiện | Câu hỏi hỏi xoáy (nếu có) được thêm vào transcript của phiên thi |
-| Quan hệ | *extend* UC-02 (Trả lời câu hỏi bằng giọng nói) |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-05 — Sinh câu hỏi hỏi xoáy (Adaptive Follow-up)** |
+| **Actor** | AI Giám khảo ảo *(AI Engine)* |
+| **Mô tả** | Dựa trên câu trả lời vừa nhận được, AI sinh câu hỏi làm rõ/đào sâu khi câu trả lời còn mơ hồ, thiếu ý hoặc mâu thuẫn. Đây là chức năng cốt lõi thể hiện tính thông minh thích ứng của hệ thống. |
+| **Điều kiện tiên quyết** | Đã có văn bản câu trả lời ([UC-04](#uc-04--chuyển-giọng-nói-sang-văn-bản-stt)); số lượt hỏi xoáy của câu hỏi hiện tại chưa vượt quá giới hạn tối đa ([UC-17](#uc-17--cấu-hình-buổi-thi)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** AI phân tích văn bản câu trả lời để xác định lỗ hổng kiến thức, điểm mơ hồ hoặc mâu thuẫn logic.<br>**2.** AI sinh câu hỏi làm rõ (follow-up) bám sát ngữ cảnh câu trả lời.<br>**3.** Câu hỏi mới được chuyển tới dịch vụ TTS để đọc cho thí sinh ([UC-03](#uc-03--đọc-câu-hỏi-bằng-giọng-nói-tts)).<br>**4.** Hệ thống tăng biến đếm số lượt hỏi xoáy của câu hỏi hiện tại lên 1 đơn vị. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **1a. Câu trả lời của sinh viên đã đầy đủ, rõ ràng và chính xác:**<br>• AI kết luận không cần hỏi thêm, hệ thống bỏ qua hỏi xoáy và chuyển sang câu hỏi tiếp theo.<br>**4a. Đã đạt số lượt hỏi xoáy tối đa:**<br>• Hệ thống ngừng sinh câu hỏi phụ và buộc chuyển tiếp câu hỏi mới dù thí sinh trả lời chưa trọn vẹn. |
+| **Hậu điều kiện** | Câu hỏi hỏi xoáy và câu trả lời tương ứng được bổ sung vào transcript của ca thi. |
+| **Quan hệ (Relationships)** | Mở rộng cho `«extend»` [UC-02](#uc-02--trả-lời-câu-hỏi-bằng-giọng-nói) (khi câu trả lời cần làm rõ). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-06 — Giám sát buổi thi**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Giảng viên |
-| Mô tả | Giảng viên theo dõi trực tiếp diễn biến buổi thi vấn đáp do AI điều khiển, có thể can thiệp khi cần |
-| Điều kiện tiên quyết | Giảng viên đã đăng nhập; buổi thi đang diễn ra |
-| Luồng sự kiện chính | 1\. Giảng viên mở màn hình giám sát của một hoặc nhiều phòng thi. 2\. Hệ thống hiển thị theo thời gian thực: câu hỏi hiện tại, văn bản câu trả lời, thời gian còn lại. 3\. Giảng viên có thể tạm dừng/kết thúc sớm phiên thi nếu cần. |
-| Luồng rẽ nhánh / ngoại lệ | 3a. Giảng viên can thiệp dừng thi → hệ thống ghi lý do can thiệp vào transcript. |
-| Hậu điều kiện | Giảng viên nắm được tình trạng buổi thi; hành động can thiệp (nếu có) được ghi log |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-06 — Giám sát buổi thi** |
+| **Actor** | Giảng viên |
+| **Mô tả** | Giảng viên theo dõi trực tiếp diễn biến các phòng thi vấn đáp ảo do AI điều khiển và có quyền can thiệp xử lý khi có tình huống bất thường. |
+| **Điều kiện tiên quyết** | Giảng viên đã đăng nhập hệ thống; buổi thi đang ở trạng thái diễn ra. |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Giảng viên mở bảng điều khiển giám sát (Dashboard) của ca thi.<br>**2.** Hệ thống hiển thị trực quan theo thời gian thực: câu hỏi hiện tại, văn bản câu trả lời sinh viên, tiến độ thời gian và trạng thái đường truyền.<br>**3.** Giảng viên theo dõi và có thể tạm dừng hoặc dừng sớm phiên thi nếu cần thiết. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **3a. Giảng viên chủ động can thiệp (tạm dừng / huỷ bài thi):**<br>• Hệ thống yêu cầu Giảng viên nhập lý do can thiệp và ghi nhận đầy đủ vào biên bản / transcript của phiên thi. |
+| **Hậu điều kiện** | Giảng viên nắm bắt toàn diện diễn biến phòng thi; các can thiệp (nếu có) được ghi log bảo mật. |
+| **Quan hệ (Relationships)** | Ca sử dụng độc lập thuộc nhóm giám sát thi. |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-07 — Ghi transcript buổi thi**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | AI Giám khảo ảo |
-| Mô tả | Lưu vết toàn bộ quá trình thi (câu hỏi, câu trả lời, câu hỏi xoáy, thời gian, điểm gợi ý) làm bằng chứng khách quan khi có khiếu nại điểm |
-| Điều kiện tiên quyết | Phiên thi đã bắt đầu (UC-01) |
-| Luồng sự kiện chính | 1\. Với mỗi câu hỏi/câu trả lời/sự kiện trong phiên thi, hệ thống ghi lại nội dung, mốc thời gian và người/thực thể liên quan. 2\. Dữ liệu được lưu trữ an toàn, gắn với mã phiên thi. 3\. Khi kết thúc phiên thi, transcript được đóng và không thể chỉnh sửa. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Sự cố lưu trữ → hệ thống lưu tạm cục bộ và đồng bộ lại khi kết nối phục hồi. |
-| Hậu điều kiện | Transcript đầy đủ, bất biến (immutable) của phiên thi được lưu trữ, phục vụ tra cứu và giải quyết khiếu nại |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-07 — Ghi transcript buổi thi** |
+| **Actor** | AI Giám khảo ảo *(AI Engine)* |
+| **Mô tả** | Lưu vết toàn bộ dữ liệu diễn biến buổi thi (câu hỏi gốc, câu hỏi xoáy, audio trả lời, văn bản STT, thời gian, điểm gợi ý) làm bằng chứng khách quan bất biến khi khiếu nại. |
+| **Điều kiện tiên quyết** | Phiên thi đã được khởi tạo và bắt đầu ([UC-01](#uc-01--tham-gia-buổi-thi-vấn-đáp)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Với mỗi tương tác hoặc sự kiện diễn ra, hệ thống ghi nhận chính xác nội dung, mốc thời gian (timestamp) và đối tượng liên quan.<br>**2.** Dữ liệu được mã hóa và lưu trữ an toàn, gắn định danh duy nhất với Session ID của ca thi.<br>**3.** Khi phiên thi kết thúc, transcript được chốt, chuyển sang trạng thái bất biến (Immutable - chỉ đọc). |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Sự cố kết nối cơ sở dữ liệu lưu trữ:**<br>• Hệ thống kích hoạt bộ nhớ đệm cục bộ (Local Cache) và tự động đồng bộ lại ngay khi kết nối phục hồi. |
+| **Hậu điều kiện** | Bộ hồ sơ transcript hoàn chỉnh, bảo mật được lưu trữ vĩnh viễn phục vụ chấm điểm và phúc khảo. |
+| **Quan hệ (Relationships)** | Được bao gồm bởi `«include»` trong [UC-01](#uc-01--tham-gia-buổi-thi-vấn-đáp). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-08 — Xem báo cáo kết quả thi**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Sinh viên |
-| Mô tả | Sinh viên xem lại kết quả sau khi thi: điểm từng câu, nhận xét của AI |
-| Điều kiện tiên quyết | Buổi thi đã kết thúc; điểm đã được giảng viên duyệt (UC-09) |
-| Luồng sự kiện chính | 1\. Sinh viên vào mục "Kết quả thi". 2\. Hệ thống hiển thị điểm từng câu hỏi, nhận xét của AI cho từng câu. 3\. Sinh viên có thể xem lại transcript câu hỏi/câu trả lời tương ứng. |
-| Luồng rẽ nhánh / ngoại lệ | 1a. Điểm chưa được giảng viên duyệt → hệ thống hiển thị trạng thái "đang chờ duyệt điểm", chưa cho xem điểm chi tiết. |
-| Hậu điều kiện | Sinh viên nắm được kết quả thi |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-08 — Xem báo cáo kết quả thi** |
+| **Actor** | Sinh viên |
+| **Mô tả** | Sinh viên xem báo cáo chi tiết kết quả sau kỳ thi: điểm từng câu hỏi, nhận xét đánh giá của AI và điểm chính thức đã được duyệt. |
+| **Điều kiện tiên quyết** | Buổi thi đã kết thúc; điểm số đã được Giảng viên phê duyệt chính thức ([UC-09](#uc-09--duyệt-điểm-cuối-cùng)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Sinh viên truy cập vào phân hệ "Kết quả thi".<br>**2.** Hệ thống hiển thị bảng điểm tổng, điểm chi tiết từng câu hỏi, rubric đánh giá và nhận xét từ AI.<br>**3.** Sinh viên có thể đối chiếu lại transcript ghi âm và câu hỏi - câu trả lời tương ứng. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **1a. Điểm thi chưa được Giảng viên duyệt hoàn tất:**<br>• Hệ thống hiển thị trạng thái "Đang chờ duyệt điểm" và ẩn chi tiết điểm số nhằm đảm bảo tính bảo mật. |
+| **Hậu điều kiện** | Sinh viên nắm rõ kết quả học tập và có căn cứ minh bạch nếu cần nộp đơn phúc khảo. |
+| **Quan hệ (Relationships)** | Phụ thuộc kết quả sau khi thực hiện [UC-09](#uc-09--duyệt-điểm-cuối-cùng). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-09 — Duyệt điểm cuối cùng**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Giảng viên |
-| Mô tả | Giảng viên xem điểm gợi ý của AI cho từng câu trả lời, có thể điều chỉnh và là người quyết định điểm số cuối cùng — đảm bảo yêu cầu "quyền quyết định thuộc về con người" |
-| Điều kiện tiên quyết | Buổi thi đã kết thúc; AI đã đưa ra gợi ý chấm điểm theo rubric (UC-10) |
-| Luồng sự kiện chính | 1\. Giảng viên mở danh sách bài thi cần duyệt. 2\. Hệ thống hiển thị điểm gợi ý của AI theo từng tiêu chí rubric, kèm transcript liên quan. 3\. Giảng viên xem xét, có thể chỉnh sửa điểm từng câu. 4\. Giảng viên xác nhận duyệt điểm cuối cùng. |
-| Luồng rẽ nhánh / ngoại lệ | 3a. Giảng viên không đồng ý với gợi ý AI → nhập điểm khác và ghi chú lý do (phục vụ minh bạch khi có khiếu nại). |
-| Hậu điều kiện | Điểm chính thức được ghi nhận, sinh viên có thể xem báo cáo (UC-08) |
-| Quan hệ | *include* UC-10 (Hỗ trợ chấm điểm theo rubric) |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-09 — Duyệt điểm cuối cùng** |
+| **Actor** | Giảng viên |
+| **Mô tả** | Giảng viên xem điểm số và nhận xét do AI đề xuất, điều chỉnh nếu cần và ra quyết định điểm số cuối cùng — đảm bảo nguyên tắc quyết định thuộc về con người (Human-in-the-loop). |
+| **Điều kiện tiên quyết** | Buổi thi đã hoàn tất; AI Giám khảo ảo đã hoàn thành gợi ý chấm điểm theo rubric ([UC-10](#uc-10--hỗ-trợ-chấm-điểm-theo-rubric)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Giảng viên mở danh sách các bài thi cần duyệt trong môn học.<br>**2.** Hệ thống hiển thị chi tiết điểm đề xuất của AI theo từng tiêu chí rubric kèm transcript đối chiếu (`«include»` [UC-10](#uc-10--hỗ-trợ-chấm-điểm-theo-rubric)).<br>**3.** Giảng viên thẩm định, có thể chấp nhận hoặc điều chỉnh lại điểm từng câu.<br>**4.** Giảng viên xác nhận phê duyệt điểm chính thức của bài thi. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **3a. Giảng viên điều chỉnh khác biệt so với gợi ý của AI:**<br>• Hệ thống yêu cầu Giảng viên nhập ghi chú lý do điều chỉnh để lưu vết minh bạch phục vụ công tác thanh tra/phúc khảo. |
+| **Hậu điều kiện** | Điểm số chính thức được cập nhật vào cơ sở dữ liệu; sinh viên có thể xem kết quả ([UC-08](#uc-08--xem-báo-cáo-kết-quả-thi)). |
+| **Quan hệ (Relationships)** | • `«include»` [UC-10](#uc-10--hỗ-trợ-chấm-điểm-theo-rubric) (Hỗ trợ chấm điểm theo rubric) |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-10 — Hỗ trợ chấm điểm theo rubric**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | AI Giám khảo ảo |
-| Mô tả | AI phân tích transcript và đề xuất điểm số cho từng câu trả lời dựa trên rubric do giảng viên thiết lập, chỉ mang tính tham khảo |
-| Điều kiện tiên quyết | Transcript buổi thi đã hoàn tất (UC-07); rubric chấm điểm đã được thiết lập |
-| Luồng sự kiện chính | 1\. Hệ thống đối chiếu từng câu trả lời với các tiêu chí trong rubric. 2\. AI tính điểm gợi ý và sinh nhận xét cho từng câu. 3\. Kết quả gợi ý được chuyển cho giảng viên duyệt (UC-09). |
-| Luồng rẽ nhánh / ngoại lệ | 1a. Câu trả lời thiếu dữ liệu (do sự cố STT) → AI đánh dấu "không đủ dữ liệu để chấm tự động", đề nghị giảng viên nghe lại bản ghi âm gốc. |
-| Hậu điều kiện | Điểm gợi ý và nhận xét theo từng câu sẵn sàng để giảng viên duyệt |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-10 — Hỗ trợ chấm điểm theo rubric** |
+| **Actor** | AI Giám khảo ảo *(AI Engine)* |
+| **Mô tả** | AI phân tích transcript bài thi và đề xuất mức điểm cho từng câu dựa theo tiêu chí rubric do giảng viên thiết lập (đóng vai trò trợ lý tham khảo). |
+| **Điều kiện tiên quyết** | Transcript bài thi đã được chốt hoàn tất ([UC-07](#uc-07--ghi-transcript-buổi-thi)); bộ tiêu chí rubric chấm điểm đã được định cấu hình. |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Hệ thống trích xuất nội dung transcript và đối chiếu với các tiêu chí trong rubric.<br>**2.** AI tính toán mức điểm gợi ý kèm đoạn văn nhận xét phân tích ưu/nhược điểm trong câu trả lời.<br>**3.** Hệ thống lưu trữ dữ liệu gợi ý và chuyển tiếp tới giao diện duyệt điểm của Giảng viên ([UC-09](#uc-09--duyệt-điểm-cuối-cùng)). |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **1a. Dữ liệu âm thanh/STT bị lỗi hoặc mất đoạn:**<br>• AI gắn cờ "Không đủ dữ liệu chấm tự động", đề xuất Giảng viên nghe trực tiếp file ghi âm gốc để đánh giá thủ công. |
+| **Hậu điều kiện** | Bộ điểm gợi ý và nhận xét chi tiết sẵn sàng để Giảng viên thẩm định. |
+| **Quan hệ (Relationships)** | Được bao gồm bởi `«include»` trong [UC-09](#uc-09--duyệt-điểm-cuối-cùng). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-11 — Xem thống kê lớp học**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Giảng viên |
-| Mô tả | Giảng viên xem thống kê toàn lớp: câu hỏi khó nhất, tỷ lệ trả lời tốt, phân bố điểm |
-| Điều kiện tiên quyết | Đã có ít nhất một buổi thi của lớp/môn học đã hoàn tất và được duyệt điểm |
-| Luồng sự kiện chính | 1\. Giảng viên chọn lớp/môn học cần xem thống kê. 2\. Hệ thống tổng hợp và hiển thị: phân bố điểm, câu hỏi có tỷ lệ trả lời kém nhất, tỷ lệ sinh viên bị hỏi xoáy nhiều. 3\. Giảng viên có thể lọc theo tiêu chí (ca thi, nhóm câu hỏi...). |
-| Luồng rẽ nhánh / ngoại lệ | 1a. Chưa đủ dữ liệu (chưa buổi thi nào hoàn tất) → hệ thống thông báo chưa có dữ liệu thống kê. |
-| Hậu điều kiện | Giảng viên có cái nhìn tổng quan để cải thiện ngân hàng câu hỏi/đề thi |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-11 — Xem thống kê lớp học** |
+| **Actor** | Giảng viên |
+| **Mô tả** | Giảng viên xem các báo cáo phân tích toàn diện về lớp học: phổ điểm, câu hỏi khó nhất, tỷ lệ sinh viên bị hỏi xoáy nhiều, câu trả lời tốt/kém. |
+| **Điều kiện tiên quyết** | Đã có ít nhất một ca thi của lớp/môn học hoàn tất và được duyệt điểm chính thức ([UC-09](#uc-09--duyệt-điểm-cuối-cùng)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Giảng viên chọn môn học/lớp học cần theo dõi báo cáo thống kê.<br>**2.** Hệ thống tổng hợp và trực quan hóa dữ liệu: biểu đồ phân bố điểm số, danh sách câu hỏi có tỷ lệ trả lời kém nhất, tỷ lệ thí sinh bị hỏi xoáy nhiều.<br>**3.** Giảng viên áp dụng các bộ lọc nâng cao (theo ca thi, chủ đề kiến thức, mức điểm). |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **1a. Chưa có dữ liệu hoàn tất (chưa có ca thi kết thúc):**<br>• Hệ thống thông báo tình trạng dữ liệu trống và đề nghị quay lại sau khi đã duyệt điểm. |
+| **Hậu điều kiện** | Giảng viên có cơ sở dữ liệu định lượng để cải tiến nội dung giảng dạy và tinh chỉnh ngân hàng đề thi. |
+| **Quan hệ (Relationships)** | Sử dụng dữ liệu đầu ra từ các ca thi đã hoàn tất. |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-12 — Xuất bảng điểm theo mẫu trường**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Giảng viên |
-| Mô tả | Xuất bảng điểm của lớp/môn học theo đúng mẫu quy định của trường để nộp cho Hệ thống Đào tạo |
-| Điều kiện tiên quyết | Toàn bộ điểm của lớp/ca thi đã được duyệt (UC-09) |
-| Luồng sự kiện chính | 1\. Giảng viên chọn lớp/môn học và mẫu bảng điểm cần xuất. 2\. Hệ thống tổng hợp điểm đã duyệt vào đúng định dạng mẫu. 3\. Hệ thống xuất file và/hoặc gửi trực tiếp tới Hệ thống Đào tạo của trường. |
-| Luồng rẽ nhánh / ngoại lệ | 1a. Còn sinh viên chưa được duyệt điểm → hệ thống cảnh báo danh sách thiếu trước khi xuất. |
-| Hậu điều kiện | Bảng điểm đúng mẫu được tạo ra và/hoặc chuyển tới Hệ thống Đào tạo |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-12 — Xuất bảng điểm theo mẫu trường** |
+| **Actor** | Giảng viên |
+| **Mô tả** | Xuất bảng điểm tổng hợp của lớp học theo đúng định dạng mẫu chuẩn do nhà trường quy định để nộp lên Hệ thống Đào tạo. |
+| **Điều kiện tiên quyết** | Toàn bộ điểm số của các sinh viên trong lớp/ca thi đã được duyệt chính thức ([UC-09](#uc-09--duyệt-điểm-cuối-cùng)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Giảng viên chọn lớp học phần và định dạng mẫu bảng điểm cần xuất.<br>**2.** Hệ thống tổng hợp toàn bộ dữ liệu điểm đã duyệt vào biểu mẫu chuẩn.<br>**3.** Hệ thống xuất file (Excel/PDF) và/hoặc đồng bộ trực tiếp dữ liệu sang Hệ thống Đào tạo của trường. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **1a. Còn sinh viên chưa được duyệt điểm trong danh sách:**<br>• Hệ thống cảnh báo danh sách sinh viên còn thiếu điểm và yêu cầu xác nhận trước khi tiến hành xuất bảng điểm. |
+| **Hậu điều kiện** | Bảng điểm hợp lệ được tạo thành công và chuyển giao an toàn tới Hệ thống Đào tạo. |
+| **Quan hệ (Relationships)** | Phụ thuộc vào kết quả phê duyệt điểm của [UC-09](#uc-09--duyệt-điểm-cuối-cùng). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-13 — Quản lý tài khoản**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Quản trị viên |
-| Mô tả | Tạo mới, chỉnh sửa, khoá/mở khoá tài khoản của giảng viên và sinh viên |
-| Điều kiện tiên quyết | Quản trị viên đã đăng nhập |
-| Luồng sự kiện chính | 1\. Quản trị viên chọn chức năng quản lý tài khoản. 2\. Quản trị viên tạo mới/chỉnh sửa/khoá tài khoản. 3\. Hệ thống cập nhật và (nếu tạo mới) gửi thông tin đăng nhập cho người dùng. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Tài khoản/email đã tồn tại → hệ thống báo lỗi trùng lặp. |
-| Hậu điều kiện | Danh sách tài khoản được cập nhật |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-13 — Quản lý tài khoản** |
+| **Actor** | Quản trị viên |
+| **Mô tả** | Thực hiện các thao tác thêm mới, chỉnh sửa thông tin, khoá hoặc mở khoá tài khoản người dùng (Sinh viên, Giảng viên). |
+| **Điều kiện tiên quyết** | Quản trị viên đã đăng nhập thành công với quyền hạn cao nhất ([UC-00](#uc-00--đăng-nhập)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Quản trị viên mở phân hệ Quản lý tài khoản.<br>**2.** Quản trị viên thực hiện tạo mới tài khoản (đơn lẻ hoặc nhập từ file Excel), sửa thông tin hoặc chuyển trạng thái khoá/kích hoạt.<br>**3.** Hệ thống lưu thông tin và tự động gửi email thông báo thông tin đăng nhập tới người dùng tương ứng. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Trùng lặp mã người dùng hoặc email trong hệ thống:**<br>• Hệ thống hiển thị cảnh báo lỗi trùng lặp dữ liệu và yêu cầu kiểm tra lại. |
+| **Hậu điều kiện** | Danh sách tài khoản người dùng được cập nhật chính xác trong cơ sở dữ liệu. |
+| **Quan hệ (Relationships)** | Chức năng quản trị hệ thống độc lập. |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-14 — Phân quyền giảng viên & môn học**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Quản trị viên |
-| Mô tả | Gán giảng viên phụ trách cho từng môn học/lớp học phần, quy định phạm vi dữ liệu giảng viên được truy cập |
-| Điều kiện tiên quyết | Tài khoản giảng viên và danh mục môn học đã tồn tại trong hệ thống |
-| Luồng sự kiện chính | 1\. Quản trị viên chọn môn học/lớp học phần. 2\. Quản trị viên gán giảng viên phụ trách. 3\. Hệ thống cập nhật quyền truy cập tương ứng cho giảng viên đó. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Giảng viên đã được gán ở lớp khác trùng lịch → hệ thống cảnh báo xung đột lịch. |
-| Hậu điều kiện | Giảng viên chỉ truy cập được dữ liệu của môn học/lớp được phân công |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-14 — Phân quyền giảng viên & môn học** |
+| **Actor** | Quản trị viên |
+| **Mô tả** | Phân công Giảng viên phụ trách từng môn học/lớp học phần cụ thể, xác lập giới hạn dữ liệu mà Giảng viên được phép truy cập. |
+| **Điều kiện tiên quyết** | Tài khoản Giảng viên và danh mục môn học đã được khởi tạo trong hệ thống. |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Quản trị viên chọn môn học hoặc lớp học phần cần gán giảng viên.<br>**2.** Quản trị viên chọn Giảng viên phụ trách và thiết lập quyền hạn tương ứng.<br>**3.** Hệ thống lưu cấu hình phân quyền và áp dụng ngay quyền truy cập cho Giảng viên. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Phát hiện xung đột lịch phân công của Giảng viên:**<br>• Hệ thống đưa ra cảnh báo xung đột để Quản trị viên xem xét điều chỉnh trước khi lưu. |
+| **Hậu điều kiện** | Giảng viên có toàn quyền quản lý ca thi, đề thi và điểm số của môn học được chỉ định. |
+| **Quan hệ (Relationships)** | Tiền đề cần thiết để Giảng viên thực hiện [UC-16](#uc-16--soạn--sinh-câu-hỏi) và [UC-17](#uc-17--cấu-hình-buổi-thi). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-15 — Cấu hình ngôn ngữ STT/TTS**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Quản trị viên |
-| Mô tả | Thiết lập ngôn ngữ (Việt/Anh) áp dụng cho việc đọc câu hỏi (TTS) và nhận diện câu trả lời (STT) theo môn học/lớp thi |
-| Điều kiện tiên quyết | Quản trị viên đã đăng nhập |
-| Luồng sự kiện chính | 1\. Quản trị viên chọn môn học/lớp thi cần cấu hình. 2\. Quản trị viên chọn ngôn ngữ áp dụng cho STT và TTS. 3\. Hệ thống lưu cấu hình, áp dụng cho các buổi thi liên quan. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Ngôn ngữ chọn chưa được hỗ trợ bởi dịch vụ STT/TTS hiện tại → hệ thống thông báo và giữ nguyên cấu hình cũ. |
-| Hậu điều kiện | Các phiên thi mới của môn học/lớp áp dụng đúng ngôn ngữ đã cấu hình |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-15 — Cấu hình ngôn ngữ STT/TTS** |
+| **Actor** | Quản trị viên |
+| **Mô tả** | Thiết lập ngôn ngữ xử lý (Tiếng Việt / Tiếng Anh) cho việc đọc đề (TTS) và nhận diện giọng nói (STT) tương ứng theo từng môn học hoặc lớp thi. |
+| **Điều kiện tiên quyết** | Quản trị viên đã đăng nhập hệ thống ([UC-00](#uc-00--đăng-nhập)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Quản trị viên chọn môn học/kỳ thi cần định cấu hình ngôn ngữ.<br>**2.** Quản trị viên lựa chọn gói ngôn ngữ phù hợp cho TTS và STT (ví dụ: vi-VN, en-US) cùng cấu hình model giọng đọc.<br>**3.** Hệ thống lưu tham số và áp dụng cho các ca thi liên quan. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Gói ngôn ngữ được chọn chưa được dịch vụ STT/TTS hiện tại hỗ trợ:**<br>• Hệ thống thông báo không tương thích và duy trì cấu hình mặc định gần nhất. |
+| **Hậu điều kiện** | Môi trường thi của môn học được cấu hình chuẩn xác về mặt ngôn ngữ trước khi buổi thi bắt đầu. |
+| **Quan hệ (Relationships)** | Cung cấp cấu hình tham số cho [UC-03](#uc-03--đọc-câu-hỏi-bằng-giọng-nói-tts) và [UC-04](#uc-04--chuyển-giọng-nói-sang-văn-bản-stt). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-16 — Soạn / sinh câu hỏi**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Giảng viên |
-| Mô tả | Giảng viên tự soạn câu hỏi hoặc yêu cầu hệ thống hỗ trợ sinh câu hỏi cho ngân hàng đề thi vấn đáp |
-| Điều kiện tiên quyết | Giảng viên đã đăng nhập và được phân quyền môn học tương ứng (UC-14) |
-| Luồng sự kiện chính | 1\. Giảng viên chọn môn học và chủ đề câu hỏi. 2\. Giảng viên nhập câu hỏi thủ công hoặc yêu cầu hệ thống gợi ý sinh câu hỏi. 3\. Giảng viên xem, chỉnh sửa và lưu vào ngân hàng câu hỏi. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Câu hỏi do hệ thống gợi ý không phù hợp → giảng viên chỉnh sửa hoặc loại bỏ trước khi lưu. |
-| Hậu điều kiện | Ngân hàng câu hỏi của môn học được cập nhật, sẵn sàng sử dụng cho các buổi thi (UC-01) |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-16 — Soạn / sinh câu hỏi** |
+| **Actor** | Giảng viên |
+| **Mô tả** | Giảng viên trực tiếp biên soạn câu hỏi hoặc sử dụng công cụ AI hỗ trợ gợi ý sinh câu hỏi để xây dựng ngân hàng đề thi vấn đáp. |
+| **Điều kiện tiên quyết** | Giảng viên đã đăng nhập và được cấp quyền phụ trách môn học ([UC-14](#uc-14--phân-quyền-giảng-viên--môn-học)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Giảng viên lựa chọn môn học và chủ đề bài học cần tạo câu hỏi.<br>**2.** Giảng viên soạn thảo câu hỏi thủ công hoặc nhập prompt yêu cầu AI gợi ý sinh bộ câu hỏi vấn đáp.<br>**3.** Giảng viên xem lại, chỉnh sửa nội dung, gán mức độ khó và lưu câu hỏi vào ngân hàng đề thi. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Câu hỏi do AI sinh ra chưa bám sát chương trình hoặc không phù hợp:**<br>• Giảng viên có toàn quyền chỉnh sửa trực tiếp, tinh chỉnh lại prompt hoặc loại bỏ câu hỏi trước khi lưu. |
+| **Hậu điều kiện** | Ngân hàng câu hỏi của môn học được cập nhật, sẵn sàng phục vụ tổ chức thi ([UC-17](#uc-17--cấu-hình-buổi-thi)). |
+| **Quan hệ (Relationships)** | Là điều kiện cung cấp dữ liệu cho [UC-17](#uc-17--cấu-hình-buổi-thi). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
 ### **UC-17 — Cấu hình buổi thi**
 
-| Mục | Nội dung |
-| :---- | :---- |
-| Actor | Giảng viên |
-| Mô tả | Thiết lập các tham số cho một buổi/ca thi: giới hạn thời gian trả lời mỗi câu, số lượt hỏi xoáy tối đa, ngân hàng câu hỏi sử dụng, rubric chấm điểm |
-| Điều kiện tiên quyết | Đã có ngân hàng câu hỏi (UC-16); giảng viên được phân quyền môn học (UC-14) |
-| Luồng sự kiện chính | 1\. Giảng viên tạo ca thi mới, chọn danh sách sinh viên tham gia. 2\. Giảng viên thiết lập: thời gian trả lời tối đa/câu, số lượt hỏi xoáy tối đa/câu, ngân hàng câu hỏi, rubric chấm điểm. 3\. Hệ thống lưu cấu hình và lên lịch ca thi. |
-| Luồng rẽ nhánh / ngoại lệ | 2a. Thông số nhập không hợp lệ (ví dụ thời gian ≤ 0\) → hệ thống báo lỗi, yêu cầu nhập lại. |
-| Hậu điều kiện | Ca thi sẵn sàng để sinh viên tham gia đúng theo cấu hình (áp dụng trong UC-01, UC-02, UC-05) |
+| Mục | Nội dung chi tiết |
+| :--- | :--- |
+| **Mã UC / Tên** | **UC-17 — Cấu hình buổi thi** |
+| **Actor** | Giảng viên |
+| **Mô tả** | Thiết lập các thông số vận hành cho một buổi/ca thi: thời gian trả lời mỗi câu, số lượt hỏi xoáy tối đa, ngân hàng đề thi và rubric chấm điểm. |
+| **Điều kiện tiên quyết** | Đã có ngân hàng câu hỏi hợp lệ ([UC-16](#uc-16--soạn--sinh-câu-hỏi)); Giảng viên được phân quyền môn học ([UC-14](#uc-14--phân-quyền-giảng-viên--môn-học)). |
+| **Luồng sự kiện chính (Main Flow)** | **1.** Giảng viên tạo ca thi mới và chọn danh sách sinh viên tham gia ca thi.<br>**2.** Giảng viên thiết lập các tham số: thời gian giới hạn/câu hỏi, số lần hỏi xoáy tối đa, chọn gói câu hỏi và rubric đánh giá.<br>**3.** Hệ thống lưu cấu hình và kích hoạt lịch thi tự động cho các thí sinh. |
+| **Luồng rẽ nhánh / Ngoại lệ (Exceptions)** | **2a. Tham số cấu hình không hợp lệ (ví dụ: thời gian ≤ 0, số câu hỏi thiếu):**<br>• Hệ thống hiển thị cảnh báo lỗi tham số và yêu cầu Giảng viên điều chỉnh lại giá trị hợp lệ. |
+| **Hậu điều kiện** | Ca thi sẵn sàng kích hoạt để sinh viên tham gia đúng giờ theo các tham số đã cấu hình ([UC-01](#uc-01--tham-gia-buổi-thi-vấn-đáp)). |
+| **Quan hệ (Relationships)** | Cung cấp toàn bộ quy tắc vận hành cho [UC-01](#uc-01--tham-gia-buổi-thi-vấn-đáp), [UC-02](#uc-02--trả-lời-câu-hỏi-bằng-giọng-nói), và [UC-05](#uc-05--sinh-câu-hỏi-hỏi-xoáy-adaptive-follow-up). |
+
+[⬆ Quay lại danh mục](#2-danh-mục-use-case-theo-nhóm)
 
 ---
 
-# **USE CASE SPECIFICATION — AIVES**
+## 🔗 4. Sơ đồ & Bảng tổng hợp quan hệ Use Case
 
-### ***(AI-powered Viva Exam System)***
+### 📊 Sơ đồ quan hệ (Mermaid Diagram)
+
+```mermaid
+flowchart TD
+    subgraph Shared["Dùng chung"]
+        UC00["UC-00: Đăng nhập"]
+    end
+
+    subgraph Group1["Nhóm 1: Quá trình diễn ra buổi thi"]
+        UC01["UC-01: Tham gia buổi thi vấn đáp"]
+        UC02["UC-02: Trả lời bằng giọng nói"]
+        UC03["UC-03: Đọc câu hỏi TTS"]
+        UC04["UC-04: Chuyển giọng nói sang văn bản STT"]
+        UC05["UC-05: Sinh câu hỏi hỏi xoáy"]
+        UC06["UC-06: Giám sát buổi thi"]
+        UC07["UC-07: Ghi transcript buổi thi"]
+    end
+
+    subgraph Group2["Nhóm 2: Đánh giá & Báo cáo"]
+        UC08["UC-08: Xem báo cáo kết quả thi"]
+        UC09["UC-09: Duyệt điểm cuối cùng"]
+        UC10["UC-10: Hỗ trợ chấm điểm Rubric"]
+        UC11["UC-11: Xem thống kê lớp học"]
+        UC12["UC-12: Xuất bảng điểm theo mẫu"]
+    end
+
+    subgraph Group3["Nhóm 3: Quản trị & Cấu hình"]
+        UC13["UC-13: Quản lý tài khoản"]
+        UC14["UC-14: Phân quyền giảng viên"]
+        UC15["UC-15: Cấu hình ngôn ngữ STT/TTS"]
+        UC16["UC-16: Soạn/sinh câu hỏi"]
+        UC17["UC-17: Cấu hình buổi thi"]
+    end
+
+    %% Relationships
+    UC01 -->|"«include»"| UC03
+    UC01 -->|"«include»"| UC07
+    UC01 -.->|"Kế tiếp"| UC02
+
+    UC02 -->|"«include»"| UC04
+    UC05 -.->|"«extend»"| UC02
+
+    UC09 -->|"«include»"| UC10
+    UC09 -.->|"Mở khoá xem kết quả"| UC08
+    UC09 -.->|"Cung cấp dữ liệu"| UC12
+
+    UC14 -.->|"Điều kiện tiên quyết"| UC16
+    UC14 -.->|"Điều kiện tiên quyết"| UC17
+    UC16 -.->|"Cung cấp ngân hàng đề"| UC17
+    UC17 -.->|"Cấu hình phiên thi"| UC01
+```
+
+### 📋 Bảng ma trận quan hệ
+
+| Use Case nguồn | Loại quan hệ | Use Case đích | Giải thích ngữ cảnh |
+| :--- | :---: | :--- | :--- |
+| **UC-01** (Tham gia buổi thi vấn đáp) | `«include»` | **UC-03** (Đọc câu hỏi TTS) | Phiên thi luôn cần đọc câu hỏi thành tiếng cho thí sinh nghe. |
+| **UC-01** (Tham gia buổi thi vấn đáp) | `«include»` | **UC-07** (Ghi transcript buổi thi) | Khởi động phiên thi bắt buộc phải kích hoạt ghi vết transcript. |
+| **UC-02** (Trả lời câu hỏi bằng giọng nói) | `«include»` | **UC-04** (Chuyển giọng nói sang văn bản STT) | Khi sinh viên trả lời, hệ thống bắt buộc chuyển giọng nói sang văn bản để AI phân tích. |
+| **UC-05** (Sinh câu hỏi hỏi xoáy) | `«extend»` | **UC-02** (Trả lời câu hỏi bằng giọng nói) | Mở rộng luồng trả lời khi câu trả lời còn mơ hồ/chưa rõ và chưa chạm giới hạn hỏi xoáy. |
+| **UC-09** (Duyệt điểm cuối cùng) | `«include»` | **UC-10** (Hỗ trợ chấm điểm theo rubric) | Khi giảng viên duyệt điểm, hệ thống luôn gọi chức năng AI gợi ý điểm theo rubric để hỗ trợ. |
+
+---
+---
+
+# PART II: USE CASE SPECIFICATION (ENGLISH)
+
+## 👥 1. Actor List
+
+| # | Actor | Type | Role & Responsibilities |
+| :-: | :--- | :--- | :--- |
+| **1** | **Student** | Primary Actor *(Human)* | Examinee who participates in the virtual oral exam room and answers questions using voice. |
+| **2** | **Lecturer** | Primary Actor *(Human)* | Authors exam questions, monitors sessions in real-time, reviews, adjusts, and approves the final official scores. |
+| **3** | **Administrator** | Primary Actor *(Human)* | Manages user accounts, assigns lecturer-course permissions, and configures system parameters. |
+| **4** | **AI Virtual Examiner** *(AI Engine)* | Secondary Actor *(System)* | Analyzes answers, generates adaptive follow-up questions, suggests rubric-based scores, and logs transcripts. |
+| **5** | **TTS Service** *(Text-to-Speech)* | Secondary Actor *(External Service)* | Converts question text into synthesized speech played to the examinee in real-time. |
+| **6** | **STT Service** *(Speech-to-Text)* | Secondary Actor *(External Service)* | Transcribes student spoken responses into text in near real-time. |
+| **7** | **Academic Affairs System** | Secondary Actor *(External System)* | School management system that receives standardized grade sheets exported from AIVES. |
 
 ---
 
-## 👥 **1. Actor List**
+## 📋 2. Use Case Catalog by Group
 
-| \# | Actor | Type | Description |
-| :---- | :---- | :---- | :---- |
-| 1 | Student | Primary actor | Examinee taking the oral exam |
-| 2 | Lecturer | Primary actor | Sets questions, proctors exams, evaluates and approves final scores |
-| 3 | Administrator | Primary actor | Manages the system, permissions, and configuration |
-| 4 | AI Virtual Examiner (AI Engine) | Secondary actor (system) | Generates follow-up questions, supports scoring, logs the transcript |
-| 5 | TTS Service (Text-to-Speech) | Secondary actor (system) | Converts question text into speech |
-| 6 | STT Service (Speech-to-Text) | Secondary actor (system) | Converts the student's spoken answer into text in near real-time |
-| 7 | Academic Affairs System | Secondary actor (system) | Receives the grade sheet exported from AIVES |
+### 🔹 Group Categorization:
+* **Shared (Authentication):** User authentication and session control.
+* **Group 1 (Exam Execution & Real-time Interaction):** Live oral exam execution between examinee and AI examiner.
+* **Group 2 (Grading, Review & Reporting):** Score evaluation, approval, analytics, and academic exports.
+* **Group 3 (Administration & Configuration):** Account management, role assignment, and exam configuration.
 
----
-
-## 📋 **2. Use Case List**
-
-| ID | Use Case Name | Primary Actor | Group |
-| :---- | :---- | :---- | :---- |
-| UC-00 | Log in | Student, Lecturer, Administrator | Shared |
-| UC-01 | Join oral exam session | Student | Group 1 |
-| UC-02 | Answer question by voice | Student | Group 1 |
-| UC-03 | Read question aloud (TTS) | TTS Service | Group 1 |
-| UC-04 | Convert speech to text (STT) | STT Service | Group 1 |
-| UC-05 | Generate adaptive follow-up question | AI Virtual Examiner | Group 1 |
-| UC-06 | Monitor exam session | Lecturer | Group 1 |
-| UC-07 | Log exam transcript | AI Virtual Examiner | Group 1 |
-| UC-08 | View exam report | Student | Group 2 |
-| UC-09 | Approve final score | Lecturer | Group 2 |
-| UC-10 | Support scoring based on rubric | AI Virtual Examiner | Group 2 |
-| UC-11 | View class statistics | Lecturer | Group 2 |
-| UC-12 | Export grade sheet (school template) | Lecturer | Group 2 |
-| UC-13 | Manage user accounts | Administrator | Group 3 |
-| UC-14 | Assign lecturer / course roles | Administrator | Group 3 |
-| UC-15 | Configure STT/TTS language | Administrator | Group 3 |
-| UC-16 | Create / generate questions | Lecturer | Group 3 |
-| UC-17 | Configure exam session settings | Lecturer | Group 3 |
+| ID | Use Case Name | Primary Actor | Group | Brief Description |
+| :-: | :--- | :--- | :--- | :--- |
+| **UC-00** | [Log in](#uc-00--log-in) | Student, Lecturer, Admin | Shared | Authenticates users into the system according to their role |
+| **UC-01** | [Join oral exam session](#uc-01--join-oral-exam-session) | Student | Group 1 | Enters the virtual exam room to start an AI-led session |
+| **UC-02** | [Answer question by voice](#uc-02--answer-question-by-voice) | Student | Group 1 | Records and submits spoken response within the time limit |
+| **UC-03** | [Read question aloud (TTS)](#uc-03--read-question-aloud-tts) | TTS Service | Group 1 | Synthesizes question text into speech played to student |
+| **UC-04** | [Convert speech to text (STT)](#uc-04--convert-speech-to-text-stt) | STT Service | Group 1 | Transcribes student's voice response into text in real-time |
+| **UC-05** | [Generate adaptive follow-up question](#uc-05--generate-adaptive-follow-up-question) | AI Virtual Examiner | Group 1 | AI generates context-aware follow-up probing questions |
+| **UC-06** | [Monitor exam session](#uc-06--monitor-exam-session) | Lecturer | Group 1 | Proctors live exam sessions in real-time |
+| **UC-07** | [Log exam transcript](#uc-07--log-exam-transcript) | AI Virtual Examiner | Group 1 | Records immutable audit trail of the entire exam session |
+| **UC-08** | [View exam report](#uc-08--view-exam-report) | Student | Group 2 | Reviews scores, AI feedback, and transcripts post-approval |
+| **UC-09** | [Approve final score](#uc-09--approve-final-score) | Lecturer | Group 2 | Reviews AI recommendations and commits the final grade |
+| **UC-10** | [Support scoring based on rubric](#uc-10--support-scoring-based-on-rubric) | AI Virtual Examiner | Group 2 | AI proposes question scores based on defined rubric |
+| **UC-11** | [View class statistics](#uc-11--view-class-statistics) | Lecturer | Group 2 | Analyzes class score distributions and question difficulty |
+| **UC-12** | [Export grade sheet (school template)](#uc-12--export-grade-sheet-school-template) | Lecturer | Group 2 | Exports grades in school-standard format for Academic Affairs |
+| **UC-13** | [Manage user accounts](#uc-13--manage-user-accounts) | Administrator | Group 3 | CRUD and lock/unlock student and lecturer accounts |
+| **UC-14** | [Assign lecturer / course roles](#uc-14--assign-lecturer--course-roles) | Administrator | Group 3 | Assigns lecturers to courses/sections with specific scopes |
+| **UC-15** | [Configure STT/TTS language](#uc-15--configure-stttts-language) | Administrator | Group 3 | Sets language model (VI / EN) per course and exam section |
+| **UC-16** | [Create / generate questions](#uc-16--create--generate-questions) | Lecturer | Group 3 | Authors questions manually or with generative AI assistance |
+| **UC-17** | [Configure exam session settings](#uc-17--configure-exam-session-settings) | Lecturer | Group 3 | Sets timing limits, max follow-ups, question sets, and rubrics |
 
 ---
 
-## 🔍 **3. Detailed Specifications**
+## 🔍 3. Detailed Use Case Specifications
+
+---
 
 ### **UC-00 — Log in**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Student, Lecturer, Administrator |
-| Description | The user logs into the system with an assigned account to access the functions corresponding to their role |
-| Preconditions | The user already has a valid account in the system |
-| Main Flow | 1\. The user opens the AIVES login page. 2\. The user enters username and password. 3\. The system authenticates the credentials. 4\. The system redirects the user to the interface matching their role (student/lecturer/administrator). |
-| Alternative / Exception Flows | 3a. Incorrect username/password → the system shows an error message and allows re-entry (up to 5 attempts before the account is temporarily locked). |
-| Postconditions | The user is in a logged-in state; a session is created |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-00 — Log in** |
+| **Actor** | Student, Lecturer, Administrator |
+| **Description** | The user logs into the system with an assigned account to access functions corresponding to their role. |
+| **Preconditions** | The user has an active, valid account created in the system. |
+| **Main Flow** | **1.** User accesses the AIVES login portal.<br>**2.** User inputs their username and password.<br>**3.** The system validates credentials against the authentication database.<br>**4.** The system redirects the user to their designated role dashboard (Student / Lecturer / Admin). |
+| **Alternative / Exception Flows** | **3a. Invalid credentials (incorrect username/password):**<br>• The system displays an error prompt and allows re-entry.<br>• If failed attempts exceed 5 consecutive times, the account is temporarily locked for security. |
+| **Postconditions** | User is in an authenticated session; an authorized session token is created. |
+| **Relationships** | Prerequisite authentication foundation for all other Use Cases. |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-01 — Join oral exam session**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Student |
-| Description | The student enters the virtual exam room to start an AI-driven oral exam session |
-| Preconditions | 1\. The student has successfully logged in (UC-00).2\. The exam session has been fully configured and scheduled by the lecturer (UC-17).3\. The scheduled exam time slot has arrived, and the student's device has a working microphone. |
-| Main Flow | 1\. The student selects the exam session from the list.2\. The system verifies eligibility (correct time, correct identity).3\. The system initializes the exam session and starts logging the transcript (UC-07).4\. The AI Virtual Examiner reads the first question aloud via TTS (includes UC-03).5\. The student answers (proceeds to UC-02). |
-| Alternative / Exception Flows | 2a. Wrong schedule / not eligible → the system rejects entry and shows the reason.3a. Connection lost during initialization → the system allows the student to resume the session within the allowed time. |
-| Postconditions | The exam session is in "in progress" state; the countdown timer starts |
-| Relationships | include UC-03 (Read question aloud); include UC-07 (Log exam transcript) |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-01 — Join oral exam session** |
+| **Actor** | Student |
+| **Description** | The student enters the virtual exam room to start an AI-conducted oral exam session. |
+| **Preconditions** | **1.** Student has successfully logged in ([UC-00](#uc-00--log-in)).<br>**2.** The exam session has been fully configured and scheduled ([UC-17](#uc-17--configure-exam-session-settings)).<br>**3.** The session time window has arrived, and student device requirements are met (mic, network). |
+| **Main Flow** | **1.** Student selects the scheduled exam session from their dashboard.<br>**2.** System verifies exam eligibility (time slot, student enrollment).<br>**3.** System initializes the exam session room and starts the transcript logging process (`«include»` [UC-07](#uc-07--log-exam-transcript)).<br>**4.** AI Virtual Examiner plays the first question aloud via the TTS service (`«include»` [UC-03](#uc-03--read-question-aloud-tts)).<br>**5.** Student prepares and answers the question (proceeds to [UC-02](#uc-02--answer-question-by-voice)). |
+| **Alternative / Exception Flows** | **2a. Not eligible / wrong time slot:**<br>• System denies entry and displays the specific rejection cause.<br>**3a. Network disconnection during room initialization:**<br>• System maintains the waiting state and allows the student to resume the session within a grace period. |
+| **Postconditions** | Exam session changes to "In-Progress"; the session timer starts counting down. |
+| **Relationships** | • `«include»` [UC-03](#uc-03--read-question-aloud-tts) (Read question aloud)<br>• `«include»` [UC-07](#uc-07--log-exam-transcript) (Log exam transcript) |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-02 — Answer question by voice**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Student |
-| Description | The student answers the AI's question by voice within the time limit set for each question |
-| Preconditions | The student is in an active exam session (UC-01); the current question has finished being read aloud |
-| Main Flow | 1\. The system starts the countdown for the answer time of the current question. 2\. The student speaks the answer. 3\. The system converts speech to text in near real-time (includes UC-04). 4\. The AI analyzes the content of the answer. 5\. If the answer is still vague/incomplete/contradictory and the maximum number of follow-ups has not been reached, the AI generates a clarifying question (extends UC-05) and returns to the question-reading step. 6\. Otherwise, the system moves on to the next question or ends the session. |
-| Alternative / Exception Flows | 2a. Time runs out before the student finishes answering → the system automatically stops recording and marks the answer as "no answer" / "partial answer". 3a. STT fails to recognize the speech (noise, unclear pronunciation) → the system asks the student to repeat once. |
-| Postconditions | The answer (text \+ audio recording) is saved to the transcript, linked to the corresponding question |
-| Relationships | *include* UC-04 (Convert speech to text); *extended by* UC-05 (Generate adaptive follow-up question) |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-02 — Answer question by voice** |
+| **Actor** | Student |
+| **Description** | The student speaks their answer into the microphone within the configured time limit per question. |
+| **Preconditions** | Student is in an active session ([UC-01](#uc-01--join-oral-exam-session)); the current question has finished being read aloud. |
+| **Main Flow** | **1.** System starts the response countdown timer for the current question.<br>**2.** Student speaks their answer through the microphone.<br>**3.** System streams and converts the spoken answer to text in near real-time (`«include»` [UC-04](#uc-04--convert-speech-to-text-stt)).<br>**4.** AI analyzes the semantic content of the answer.<br>**5.** If the answer is vague, incomplete, or contradictory, and maximum follow-ups has not been reached: AI generates a follow-up probing question (`«extend»` [UC-05](#uc-05--generate-adaptive-follow-up-question)) and returns to question playback.<br>**6.** Otherwise, the system transitions to the next primary question or completes the exam. |
+| **Alternative / Exception Flows** | **2a. Time expires before student finishes:**<br>• System automatically stops microphone recording, marks the question as "No Answer" or "Partial Answer", and moves forward.<br>**3a. STT service fails to recognize speech (excessive background noise or muffled audio):**<br>• System asks the student to repeat once before resuming the timer. |
+| **Postconditions** | Student's answer (both text transcript and raw audio recording) is safely persisted in the session transcript. |
+| **Relationships** | • `«include»` [UC-04](#uc-04--convert-speech-to-text-stt) (Convert speech to text)<br>• Extended by `«extend»` [UC-05](#uc-05--generate-adaptive-follow-up-question) (Generate adaptive follow-up) |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-03 — Read question aloud (TTS)**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | TTS Service |
-| Description | Converts the text content of a question (either written by the lecturer or generated by the AI) into speech played back to the student |
-| Preconditions | The question text is available; the reading language has been configured (UC-15) |
-| Main Flow | 1\. The system sends the question text to the TTS service. 2\. The TTS service synthesizes speech in the configured language. 3\. The system plays the audio for the student. |
-| Alternative / Exception Flows | 2a. The TTS service is unresponsive/fails → the system displays the question as text instead and logs the incident. |
-| Postconditions | The question has been conveyed to the student (as audio) |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-03 — Read question aloud (TTS)** |
+| **Actor** | TTS Service *(System actor)* |
+| **Mô tả / Description** | Converts the text of a question (either created by the lecturer or generated by AI) into synthetic voice played to the student. |
+| **Preconditions** | Question text is available; TTS language model has been configured ([UC-15](#uc-15--configure-stttts-language)). |
+| **Main Flow** | **1.** System delivers question text payload to the TTS service.<br>**2.** TTS service synthesizes natural speech in the designated language and voice profile.<br>**3.** System plays audio stream through the student's output device. |
+| **Alternative / Exception Flows** | **2a. TTS service is unresponsive or errors out:**<br>• System falls back to displaying the question text directly on screen and logs the service incident. |
+| **Postconditions** | The question has been clearly presented to the student as audio. |
+| **Relationships** | Included by `«include»` in [UC-01](#uc-01--join-oral-exam-session). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-04 — Convert speech to text (STT)**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | STT Service |
-| Description | Converts the student's spoken answer into text in near real-time so the AI can analyze it |
-| Preconditions | The student's answer is currently being recorded; the recognition language has been configured (UC-15) |
-| Main Flow | 1\. The system streams the audio to the STT service in real time. 2\. The STT service returns the corresponding text, including domain-specific terminology. 3\. The system displays/stores the text for further AI processing. |
-| Alternative / Exception Flows | 2a. Latency exceeds the allowed threshold → the system flags a risk to the natural pace of the exam (related to the "low latency" non-functional requirement). 2b. Domain-specific terms are misrecognized → the text is still saved but flagged as low-confidence for the lecturer to cross-check if needed. |
-| Postconditions | The answer text is ready for the AI to generate a follow-up question or scoring |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-04 — Convert speech to text (STT)** |
+| **Actor** | STT Service *(System actor)* |
+| **Description** | Transcribes student's spoken audio stream into text in near real-time for immediate AI semantic processing. |
+| **Preconditions** | Student's answer is actively being recorded ([UC-02](#uc-02--answer-question-by-voice)); recognition language configured ([UC-15](#uc-15--configure-stttts-language)). |
+| **Main Flow** | **1.** System streams live audio bytes to the STT service.<br>**2.** STT service processes audio and streams back recognized text tokens (including domain jargon).<br>**3.** System aggregates and provides text output for AI analysis. |
+| **Alternative / Exception Flows** | **2a. Latency exceeds allowed SLA threshold:**<br>• System raises a performance alert to avoid breaking natural conversational pacing.<br>**2b. Specialized terminology misrecognized:**<br>• Text is saved but tagged with a low confidence score so the lecturer can cross-check raw audio later. |
+| **Postconditions** | Transcribed text is ready for AI follow-up evaluation and rubric scoring. |
+| **Relationships** | Included by `«include»` in [UC-02](#uc-02--answer-question-by-voice). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-05 — Generate adaptive follow-up question**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | AI Virtual Examiner |
-| Description | Based on the content of the answer just received, the AI generates a clarifying/probing question, the same way a lecturer would ask further when an answer is vague, incomplete, or contradictory. This is the function that most clearly demonstrates the system's "intelligence" |
-| Preconditions | The answer text is available (UC-04); the maximum number of follow-ups configured for the current question (UC-17) has not yet been reached |
-| Main Flow | 1\. The AI analyzes the answer text to detect vagueness, missing points, or contradictions. 2\. The AI generates a context-appropriate clarifying question. 3\. The new question is sent to TTS to be read aloud to the student (UC-03). 4\. The system increments the follow-up counter for the current question. |
-| Alternative / Exception Flows | 1a. The answer is already complete and clear → the AI decides not to ask a follow-up and moves to the next question. 4a. The maximum number of follow-ups has been reached → the system forces a move to the next question even if the answer is still incomplete. |
-| Postconditions | The follow-up question (if any) is added to the exam session transcript |
-| Relationships | *extends* UC-02 (Answer question by voice) |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-05 — Generate adaptive follow-up question** |
+| **Actor** | AI Virtual Examiner *(AI Engine)* |
+| **Description** | Based on the student's answer text, AI crafts probing follow-up questions when the answer is incomplete, vague, or contradictory—mimicking human examiner probing. |
+| **Preconditions** | Transcribed text is available ([UC-04](#uc-04--convert-speech-to-text-stt)); current question follow-up count is below maximum setting ([UC-17](#uc-17--configure-exam-session-settings)). |
+| **Main Flow** | **1.** AI evaluates the text for gaps, ambiguities, or logical contradictions.<br>**2.** AI generates a tailored follow-up question relevant to the context.<br>**3.** The new follow-up question is handed over to TTS to read aloud ([UC-03](#uc-03--read-question-aloud-tts)).<br>**4.** System increments the follow-up counter for the current question by 1. |
+| **Alternative / Exception Flows** | **1a. The student's answer is already comprehensive and clear:**<br>• AI decides no follow-up is necessary and proceeds directly to the next question.<br>**4a. Maximum follow-up limit reached:**<br>• System suppresses further follow-ups and forces transition to the next question. |
+| **Postconditions** | Follow-up question and student's subsequent reply are appended to the exam transcript. |
+| **Relationships** | Extends `«extend»` [UC-02](#uc-02--answer-question-by-voice) conditionally based on answer depth. |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-06 — Monitor exam session**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Lecturer |
-| Description | The lecturer observes the progress of an AI-driven oral exam session in real time and can intervene when necessary |
-| Preconditions | The lecturer has logged in; the exam session is in progress |
-| Main Flow | 1\. The lecturer opens the monitoring screen for one or more exam rooms. 2\. The system displays, in real time: the current question, the answer text, and the remaining time. 3\. The lecturer may pause/end the session early if needed. |
-| Alternative / Exception Flows | 3a. The lecturer intervenes to stop the exam → the system logs the reason for the intervention in the transcript. |
-| Postconditions | The lecturer is aware of the exam's status; any intervention (if any) is logged |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-06 — Monitor exam session** |
+| **Actor** | Lecturer |
+| **Description** | Lecturer observes ongoing AI-driven viva sessions in real-time and retains authority to intervene during anomalies. |
+| **Preconditions** | Lecturer is logged in; exam session is actively in progress. |
+| **Main Flow** | **1.** Lecturer opens the exam monitoring dashboard.<br>**2.** System presents real-time data: active question, live transcript stream, countdown timers, and network health.<br>**3.** Lecturer oversees sessions and may pause or terminate a session early if warranted. |
+| **Alternative / Exception Flows** | **3a. Lecturer executes an intervention (pause/terminate):**<br>• System requires a mandatory reason note and logs the intervention into the official exam record. |
+| **Postconditions** | Lecturer maintains continuous situational awareness; any proctor intervention is auditable. |
+| **Relationships** | Independent proctoring Use Case. |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-07 — Log exam transcript**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | AI Virtual Examiner |
-| Description | Records the entire exam process (questions, answers, follow-up questions, timing, suggested scores) as objective evidence in case of a grade appeal |
-| Preconditions | The exam session has started (UC-01) |
-| Main Flow | 1\. For every question/answer/event during the session, the system records the content, timestamp, and related entity. 2\. The data is stored securely, linked to the session ID. 3\. When the session ends, the transcript is finalized and becomes immutable. |
-| Alternative / Exception Flows | 2a. A storage failure occurs → the system saves data locally as a buffer and syncs it once the connection is restored. |
-| Postconditions | A complete, immutable transcript of the exam session is stored, supporting lookup and grade-appeal resolution |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-07 — Log exam transcript** |
+| **Actor** | AI Virtual Examiner *(AI Engine)* |
+| **Description** | Records an immutable audit log of the entire exam (questions, answers, follow-ups, timestamps, audio, AI scores) as objective evidence. |
+| **Preconditions** | Exam session has commenced ([UC-01](#uc-01--join-oral-exam-session)). |
+| **Main Flow** | **1.** For every event in the session, the system captures timestamps, content, and participant identifiers.<br>**2.** Data is securely written to storage bound to the unique Session ID.<br>**3.** Upon session completion, the transcript is finalized into an immutable, read-only state. |
+| **Alternative / Exception Flows** | **2a. Storage connection failure:**<br>• System caches events locally and synchronizes automatically upon connection recovery. |
+| **Postconditions** | An immutable transcript is stored, guaranteeing transparency for grading and dispute appeals. |
+| **Relationships** | Included by `«include»` in [UC-01](#uc-01--join-oral-exam-session). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-08 — View exam report**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Student |
-| Description | The student reviews the exam results afterward: score per question and the AI's comments |
-| Preconditions | The exam session has ended; the score has been approved by the lecturer (UC-09) |
-| Main Flow | 1\. The student goes to the "Exam Results" section. 2\. The system displays the score for each question and the AI's comments for each one. 3\. The student may review the transcript of the corresponding question/answer. |
-| Alternative / Exception Flows | 1a. The score has not yet been approved by the lecturer → the system shows a "pending approval" status and does not yet display detailed scores. |
-| Postconditions | The student knows their exam results |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-08 — View exam report** |
+| **Actor** | Student |
+| **Description** | Student reviews performance report after the exam: scores per question, AI comments, and approved final grades. |
+| **Preconditions** | Exam is finished; final scores have been approved by the lecturer ([UC-09](#uc-09--approve-final-score)). |
+| **Main Flow** | **1.** Student navigates to the "Exam Results" section.<br>**2.** System displays overall score, per-question score breakdown, rubric evaluations, and AI feedback.<br>**3.** Student can review their corresponding transcript and audio excerpts. |
+| **Alternative / Exception Flows** | **1a. Scores have not yet been approved by the lecturer:**<br>• System displays a "Pending Lecturer Approval" status badge and suppresses specific scores. |
+| **Postconditions** | Student is informed of exam outcome and has transparent reference for any grade inquiry. |
+| **Relationships** | Dependent on completion of [UC-09](#uc-09--approve-final-score). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-09 — Approve final score**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Lecturer |
-| Description | The lecturer reviews the AI's suggested score for each answer, may adjust it, and is the one who makes the final scoring decision — ensuring the "human decision authority" requirement |
-| Preconditions | The exam session has ended; the AI has produced a rubric-based scoring suggestion (UC-10) |
-| Main Flow | 1\. The lecturer opens the list of exams to review. 2\. The system displays the AI's suggested score per rubric criterion, along with the relevant transcript. 3\. The lecturer reviews and may edit the score for each question. 4\. The lecturer confirms and approves the final score. |
-| Alternative / Exception Flows | 3a. The lecturer disagrees with the AI's suggestion → enters a different score and notes the reason (for transparency in case of appeal). |
-| Postconditions | The official score is recorded; the student can view the report (UC-08) |
-| Relationships | *include* UC-10 (Support scoring based on rubric) |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-09 — Approve final score** |
+| **Actor** | Lecturer |
+| **Description** | Lecturer reviews AI-recommended scores and comments, makes manual adjustments, and commits the authoritative grade (Human-in-the-loop). |
+| **Preconditions** | Exam session has concluded; AI has generated rubric-based scoring suggestions ([UC-10](#uc-10--support-scoring-based-on-rubric)). |
+| **Main Flow** | **1.** Lecturer opens the pending review list for the course.<br>**2.** System displays AI suggested scores per rubric criteria alongside the transcript (`«include»` [UC-10](#uc-10--support-scoring-based-on-rubric)).<br>**3.** Lecturer reviews, adjusts marks per question if needed, and writes notes.<br>**4.** Lecturer confirms and approves the final official grade. |
+| **Alternative / Exception Flows** | **3a. Lecturer overrides AI suggested marks:**<br>• System prompts for an adjustment reason to ensure auditing clarity in case of student grade appeals. |
+| **Postconditions** | Official grade is committed; student is permitted to view their report ([UC-08](#uc-08--view-exam-report)). |
+| **Relationships** | • `«include»` [UC-10](#uc-10--support-scoring-based-on-rubric) (Support scoring based on rubric) |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-10 — Support scoring based on rubric**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | AI Virtual Examiner |
-| Description | The AI analyzes the transcript and proposes a score for each answer based on the rubric set by the lecturer; this is for reference only |
-| Preconditions | The exam transcript is complete (UC-07); the scoring rubric has been set up |
-| Main Flow | 1\. The system compares each answer against the rubric criteria. 2\. The AI calculates a suggested score and generates comments for each question. 3\. The suggested results are forwarded to the lecturer for approval (UC-09). |
-| Alternative / Exception Flows | 1a. An answer is missing data (due to an STT failure) → the AI flags it as "insufficient data for automatic scoring" and recommends the lecturer listen to the original recording. |
-| Postconditions | Suggested scores and comments per question are ready for the lecturer's approval |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-10 — Support scoring based on rubric** |
+| **Actor** | AI Virtual Examiner *(AI Engine)* |
+| **Description** | AI analyzes transcript content and proposes score recommendations against the lecturer's rubric (advisory role). |
+| **Preconditions** | Session transcript is finalized ([UC-07](#uc-07--log-exam-transcript)); rubric criteria are configured. |
+| **Main Flow** | **1.** System evaluates transcript entries against rubric criteria.<br>**2.** AI computes candidate score values and drafts explanatory comments.<br>**3.** Recommendations are stored and presented on the lecturer's approval screen ([UC-09](#uc-09--approve-final-score)). |
+| **Alternative / Exception Flows** | **1a. Speech/text data missing or corrupted:**<br>• AI tags "Insufficient data for automated scoring" and instructs lecturer to manually listen to original audio. |
+| **Postconditions** | Advisory score breakdown and feedback are ready for human verification. |
+| **Relationships** | Included by `«include»` in [UC-09](#uc-09--approve-final-score). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-11 — View class statistics**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Lecturer |
-| Description | The lecturer views class-wide statistics: hardest questions, good-answer rate, score distribution |
-| Preconditions | At least one exam session of the class/course has been completed and its scores approved |
-| Main Flow | 1\. The lecturer selects the class/course to view statistics for. 2\. The system aggregates and displays: score distribution, questions with the lowest answer-quality rate, the rate of students receiving multiple follow-ups. 3\. The lecturer may filter by criteria (exam session, question group...). |
-| Alternative / Exception Flows | 1a. Not enough data (no session completed yet) → the system reports that no statistics are available. |
-| Postconditions | The lecturer gains an overview to improve the question bank/exam design |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-11 — View class statistics** |
+| **Actor** | Lecturer |
+| **Description** | Lecturer analyzes aggregate performance metrics: score distributions, hardest questions, and high-frequency follow-up rates. |
+| **Preconditions** | At least one exam session has finished and had scores approved ([UC-09](#uc-09--approve-final-score)). |
+| **Main Flow** | **1.** Lecturer selects the course/cohort to view statistics.<br>**2.** System computes and renders charts: grade distribution, lowest-scoring questions, and students requiring high follow-up counts.<br>**3.** Lecturer applies filter criteria (by section, exam date, question group). |
+| **Alternative / Exception Flows** | **1a. Incomplete data (no approved sessions yet):**<br>• System displays an empty state notification prompting the lecturer to complete grading first. |
+| **Postconditions** | Lecturer acquires actionable insights to refine curricula and improve question bank design. |
+| **Relationships** | Independent analytics Use Case. |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-12 — Export grade sheet (school template)**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Lecturer |
-| Description | Exports the class/course grade sheet in the format required by the school, for submission to the Academic Affairs System |
-| Preconditions | All scores for the class/session have been approved (UC-09) |
-| Main Flow | 1\. The lecturer selects the class/course and the grade sheet template to export. 2\. The system compiles the approved scores into the exact template format. 3\. The system exports the file and/or sends it directly to the school's Academic Affairs System. |
-| Alternative / Exception Flows | 1a. Some students' scores are not yet approved → the system warns about the missing list before exporting. |
-| Postconditions | A correctly formatted grade sheet is produced and/or transferred to the Academic Affairs System |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-12 — Export grade sheet (school template)** |
+| **Actor** | Lecturer |
+| **Description** | Generates the official course grade sheet matching university-mandated templates for submission to the Academic Affairs System. |
+| **Preconditions** | All student scores for the class section have been approved ([UC-09](#uc-09--approve-final-score)). |
+| **Main Flow** | **1.** Lecturer selects the course section and designated export template.<br>**2.** System aggregates approved scores into the standardized format.<br>**3.** System produces export files (Excel/PDF) and/or submits directly to the Academic Affairs System. |
+| **Alternative / Exception Flows** | **1a. Some students have pending unapproved scores:**<br>• System displays a warning modal listing pending students and requests explicit confirmation. |
+| **Postconditions** | Formatted grade sheet is exported and safely transmitted to institutional records. |
+| **Relationships** | Dependent on [UC-09](#uc-09--approve-final-score). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-13 — Manage user accounts**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Administrator |
-| Description | Create, edit, lock/unlock lecturer and student accounts |
-| Preconditions | The administrator has logged in |
-| Main Flow | 1\. The administrator opens the account management function. 2\. The administrator creates/edits/locks an account. 3\. The system updates the record and (if newly created) sends login credentials to the user. |
-| Alternative / Exception Flows | 2a. The account/email already exists → the system shows a duplicate error. |
-| Postconditions | The account list is updated |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-13 — Manage user accounts** |
+| **Actor** | Administrator |
+| **Description** | Administrative functions to create, update, lock, and unlock student and lecturer system accounts. |
+| **Preconditions** | Administrator is logged in with elevated privileges ([UC-00](#uc-00--log-in)). |
+| **Main Flow** | **1.** Administrator accesses the user management module.<br>**2.** Administrator creates accounts (single or batch Excel import), modifies profile data, or toggles status.<br>**3.** System updates records and dispatches credential notices to user email addresses. |
+| **Alternative / Exception Flows** | **2a. Duplicate user ID or email:**<br>• System flags duplicate record error and prevents creation until resolved. |
+| **Postconditions** | User repository is successfully updated in the database. |
+| **Relationships** | Independent administrative Use Case. |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-14 — Assign lecturer / course roles**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Administrator |
-| Description | Assigns a lecturer to a course/class, defining the scope of data that lecturer can access |
-| Preconditions | Lecturer accounts and the course catalog already exist in the system |
-| Main Flow | 1\. The administrator selects a course/class. 2\. The administrator assigns the responsible lecturer. 3\. The system updates the corresponding access permissions for that lecturer. |
-| Alternative / Exception Flows | 2a. The lecturer is already assigned to another class with a conflicting schedule → the system warns of a scheduling conflict. |
-| Postconditions | The lecturer can only access data for the assigned course/class |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-14 — Assign lecturer / course roles** |
+| **Actor** | Administrator |
+| **Description** | Assigns responsible lecturers to course offerings, establishing data access boundaries and exam authoring rights. |
+| **Preconditions** | Lecturer accounts and courses exist in the system. |
+| **Main Flow** | **1.** Administrator selects target course offering / class section.<br>**2.** Administrator selects lecturer and assigns role permissions.<br>**3.** System persists assignments and updates lecturer access scopes. |
+| **Alternative / Exception Flows** | **2a. Schedule conflict detected for the selected lecturer:**<br>• System displays a conflict notice to allow review before saving. |
+| **Postconditions** | Lecturer acquires full management access over the assigned course's exam activities. |
+| **Relationships** | Prerequisite authorization for [UC-16](#uc-16--create--generate-questions) and [UC-17](#uc-17--configure-exam-session-settings). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-15 — Configure STT/TTS language**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Administrator |
-| Description | Sets the language (Vietnamese/English) used for reading questions aloud (TTS) and recognizing answers (STT), per course/exam session |
-| Preconditions | The administrator has logged in |
-| Main Flow | 1\. The administrator selects the course/exam session to configure. 2\. The administrator selects the language to apply for STT and TTS. 3\. The system saves the configuration and applies it to the related exam sessions. |
-| Alternative / Exception Flows | 2a. The selected language is not yet supported by the current STT/TTS service → the system shows a notice and keeps the previous configuration. |
-| Postconditions | New exam sessions for the course/class use the configured language |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-15 — Configure STT/TTS language** |
+| **Actor** | Administrator |
+| **Description** | Configures speech recognition (STT) and synthesis (TTS) language models (Vietnamese/English) per course and exam section. |
+| **Preconditions** | Administrator has logged in ([UC-00](#uc-00--log-in)). |
+| **Main Flow** | **1.** Administrator selects course/exam section to configure.<br>**2.** Administrator assigns STT/TTS language profiles (e.g., vi-VN, en-US) and voice characteristics.<br>**3.** System stores configuration parameters for downstream exam sessions. |
+| **Alternative / Exception Flows** | **2a. Selected language is not supported by current STT/TTS service:**<br>• System notifies incompatibility and maintains default fallback settings. |
+| **Postconditions** | Audio processing configurations are prepared for future exam sessions. |
+| **Relationships** | Supplies speech settings to [UC-03](#uc-03--read-question-aloud-tts) and [UC-04](#uc-04--convert-speech-to-text-stt). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-16 — Create / generate questions**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Lecturer |
-| Description | The lecturer writes questions manually or requests system-assisted question generation for the oral exam question bank |
-| Preconditions | The lecturer has logged in and been assigned to the corresponding course (UC-14) |
-| Main Flow | 1\. The lecturer selects the course and question topic. 2\. The lecturer enters a question manually or requests the system to suggest a generated question. 3\. The lecturer reviews, edits, and saves it to the question bank. |
-| Alternative / Exception Flows | 2a. The system-suggested question is not suitable → the lecturer edits or discards it before saving. |
-| Postconditions | The course's question bank is updated and ready to be used in exam sessions (UC-01) |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-16 — Create / generate questions** |
+| **Actor** | Lecturer |
+| **Description** | Lecturer manually authors viva questions or requests AI-generated question suggestions for the course question bank. |
+| **Preconditions** | Lecturer is logged in and assigned to the course ([UC-14](#uc-14--assign-lecturer--course-roles)). |
+| **Main Flow** | **1.** Lecturer selects course and syllabus topic.<br>**2.** Lecturer authors questions manually or prompts the AI engine to generate oral examination items.<br>**3.** Lecturer reviews, refines wording, assigns difficulty ratings, and saves items to the bank. |
+| **Alternative / Exception Flows** | **2a. AI-generated questions are off-topic or ill-suited:**<br>• Lecturer edits text directly, tunes prompt instructions, or discards items prior to saving. |
+| **Postconditions** | Course question bank is updated and available for exam scheduling ([UC-17](#uc-17--configure-exam-session-settings)). |
+| **Relationships** | Feeds questions into [UC-17](#uc-17--configure-exam-session-settings). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
 ### **UC-17 — Configure exam session settings**
 
-| Field | Content |
-| :---- | :---- |
-| Actor | Lecturer |
-| Description | Sets the parameters for an exam session: maximum answer time per question, maximum number of follow-ups, question bank used, and scoring rubric |
-| Preconditions | A question bank already exists (UC-16); the lecturer is assigned to the course (UC-14) |
-| Main Flow | 1\. The lecturer creates a new exam session and selects the participating students. 2\. The lecturer configures: maximum answer time per question, maximum follow-ups per question, question bank, and scoring rubric. 3\. The system saves the configuration and schedules the session. |
-| Alternative / Exception Flows | 2a. Invalid input (e.g. time ≤ 0\) → the system shows an error and asks for re-entry. |
-| Postconditions | The exam session is ready for students to join according to the configuration (applied in UC-01, UC-02, UC-05) |
+| Field | Content Details |
+| :--- | :--- |
+| **UC ID / Name** | **UC-17 — Configure exam session settings** |
+| **Actor** | Lecturer |
+| **Description** | Defines runtime parameters for an exam session: answer time limits, max follow-up iterations, question bank selection, and grading rubric. |
+| **Preconditions** | Valid question bank exists ([UC-16](#uc-16--create--generate-questions)); lecturer has course access ([UC-14](#uc-14--assign-lecturer--course-roles)). |
+| **Main Flow** | **1.** Lecturer creates a new exam session and enrolls student candidates.<br>**2.** Lecturer configures parameters: response time limit/question, maximum follow-ups, question pool, and rubric criteria.<br>**3.** System validates parameters, saves schedule, and initializes session queues. |
+| **Alternative / Exception Flows** | **2a. Invalid parameter values (e.g., time limit ≤ 0, empty question pool):**<br>• System prompts validation errors and prevents session publishing until corrected. |
+| **Postconditions** | Exam session is ready for student participation ([UC-01](#uc-01--join-oral-exam-session)). |
+| **Relationships** | Governs execution rules for [UC-01](#uc-01--join-oral-exam-session), [UC-02](#uc-02--answer-question-by-voice), and [UC-05](#uc-05--generate-adaptive-follow-up-question). |
+
+[⬆ Back to catalog](#2-use-case-catalog-by-group)
 
 ---
 
+## 🔗 4. Diagram & Summary of Use Case Relationships
 
-**UC-01** Join oral exam session — *include* → **UC-03** Read question aloud (TTS)
+### 📊 Relationship Diagram (Mermaid)
 
-**UC-01** Join oral exam session — *include* → **UC-07** Log exam transcript
+```mermaid
+flowchart TD
+    subgraph Shared["Shared"]
+        UC00_EN["UC-00: Log in"]
+    end
 
-**UC-02** Answer question by voice — *include* → **UC-04** Convert speech to text (STT)
+    subgraph Group1_EN["Group 1: Exam Execution & Interaction"]
+        UC01_EN["UC-01: Join oral exam session"]
+        UC02_EN["UC-02: Answer by voice"]
+        UC03_EN["UC-03: Read question TTS"]
+        UC04_EN["UC-04: Speech to text STT"]
+        UC05_EN["UC-05: Adaptive follow-up"]
+        UC06_EN["UC-06: Monitor exam session"]
+        UC07_EN["UC-07: Log exam transcript"]
+    end
 
-**UC-02** Answer question by voice — *extended by* **UC-05** Generate adaptive follow-up question
+    subgraph Group2_EN["Group 2: Grading & Reporting"]
+        UC08_EN["UC-08: View exam report"]
+        UC09_EN["UC-09: Approve final score"]
+        UC10_EN["UC-10: Support rubric scoring"]
+        UC11_EN["UC-11: View class statistics"]
+        UC12_EN["UC-12: Export grade sheet"]
+    end
 
-**UC-05** Generate adaptive follow-up question — *extends* → **UC-02** Answer question by voice
+    subgraph Group3_EN["Group 3: Admin & Configuration"]
+        UC13_EN["UC-13: Manage accounts"]
+        UC14_EN["UC-14: Assign roles"]
+        UC15_EN["UC-15: Configure STT/TTS"]
+        UC16_EN["UC-16: Author questions"]
+        UC17_EN["UC-17: Configure exam session"]
+    end
 
-**UC-09** Approve final score — *include* → **UC-10** Support scoring based on rubric
+    %% Relationships
+    UC01_EN -->|"«include»"| UC03_EN
+    UC01_EN -->|"«include»"| UC07_EN
+    UC01_EN -.->|"Proceeds to"| UC02_EN
 
+    UC02_EN -->|"«include»"| UC04_EN
+    UC05_EN -.->|"«extend»"| UC02_EN
+
+    UC09_EN -->|"«include»"| UC10_EN
+    UC09_EN -.->|"Enables view"| UC08_EN
+    UC09_EN -.->|"Supplies grades"| UC12_EN
+
+    UC14_EN -.->|"Prerequisite"| UC16_EN
+    UC14_EN -.->|"Prerequisite"| UC17_EN
+    UC16_EN -.->|"Supplies bank"| UC17_EN
+    UC17_EN -.->|"Configures"| UC01_EN
+```
+
+### 📋 Relationships Summary Matrix
+
+| Source Use Case | Relationship Type | Target Use Case | Context Description |
+| :--- | :---: | :--- | :--- |
+| **UC-01** (Join oral exam session) | `«include»` | **UC-03** (Read question aloud TTS) | Every active exam session requires reading the question aloud to the student. |
+| **UC-01** (Join oral exam session) | `«include»` | **UC-07** (Log exam transcript) | Initializing an exam session mandatorily activates continuous transcript logging. |
+| **UC-02** (Answer question by voice) | `«include»` | **UC-04** (Convert speech to text STT) | When a student answers orally, real-time speech-to-text conversion is mandatory for AI processing. |
+| **UC-05** (Generate adaptive follow-up) | `«extend»` | **UC-02** (Answer question by voice) | Extends answering when the student's response is vague/incomplete and follow-up limit is not exceeded. |
+| **UC-09** (Approve final score) | `«include»` | **UC-10** (Support scoring based on rubric) | Reviewing grades automatically incorporates AI rubric scoring recommendations. |
